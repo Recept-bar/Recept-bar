@@ -12,6 +12,7 @@
       --text-main: #ffffff;
       --text-muted: #aaaaaa;
       --border: #2a2a2a;
+      --success: #4caf50;
     }
 
     * {
@@ -152,6 +153,7 @@
       white-space: nowrap;
     }
 
+    /* Нижняя плашка корзины */
     .cart-bar {
       position: fixed;
       bottom: 0;
@@ -193,10 +195,11 @@
       cursor: pointer;
     }
 
+    /* Модальные окна */
     .modal {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.85);
       z-index: 300;
       display: flex;
       justify-content: center;
@@ -215,7 +218,9 @@
       border-radius: 16px;
       padding: 20px;
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
+      max-height: 85vh;
+      overflow-y: auto;
     }
 
     .modal-title {
@@ -226,10 +231,47 @@
       text-align: center;
     }
 
+    /* Элементы управления корзиной внутри модалки */
+    .cart-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cart-item-title {
+      font-size: 14px;
+      font-weight: 500;
+      flex: 1;
+      padding-right: 10px;
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .qty-btn {
+      background: #2a2a2a;
+      color: var(--accent);
+      border: 1px solid var(--border);
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .type-switcher {
       display: flex;
       gap: 10px;
-      margin-bottom: 16px;
+      margin: 16px 0;
     }
 
     .type-btn {
@@ -276,13 +318,14 @@
     .modal-actions {
       display: flex;
       gap: 10px;
+      margin-top: 16px;
     }
 
     .btn-cancel {
       background: #2a2a2a;
       color: var(--text-main);
       border: none;
-      padding: 10px;
+      padding: 12px;
       border-radius: 10px;
       flex: 1;
       cursor: pointer;
@@ -293,11 +336,36 @@
       background: var(--accent);
       color: #000;
       border: none;
-      padding: 10px;
+      padding: 12px;
       border-radius: 10px;
       flex: 2;
       cursor: pointer;
       font-weight: bold;
+    }
+
+    /* Окно успешной отправки */
+    .success-box {
+      text-align: center;
+      padding: 10px;
+    }
+
+    .success-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .success-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .success-text {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      line-height: 1.4;
     }
   </style>
 </head>
@@ -319,18 +387,23 @@
 
   <div class="container" id="menuContainer"></div>
 
+  <!-- Плашка снизу -->
   <div class="cart-bar" id="cartBar">
     <div class="cart-info">
       <div>Выбрано: <span id="cartCount">0</span> блюд</div>
       <div class="cart-total" id="cartTotal">0 тг</div>
     </div>
-    <button class="checkout-btn" onclick="openModal()">Оформить заказ</button>
+    <button class="checkout-btn" onclick="openCartModal()">Корзина</button>
   </div>
 
-  <div class="modal" id="orderModal">
+  <!-- Модальное окно Корзины и оформления -->
+  <div class="modal" id="cartModal">
     <div class="modal-content">
-      <div class="modal-title" id="modalTitleText">Детали заказа</div>
+      <div class="modal-title" id="cartTitleText">Ваш заказ</div>
       
+      <!-- Список блюд с кнопками + / - -->
+      <div id="cartItemsList"></div>
+
       <div class="type-switcher">
         <button class="type-btn active" id="typeTableBtn" onclick="setOrderType('table')">🪑 Столик</button>
         <button class="type-btn" id="typeDeliveryBtn" onclick="setOrderType('delivery')">🚗 Доставка</button>
@@ -358,8 +431,20 @@
       </div>
 
       <div class="modal-actions">
-        <button class="btn-cancel" onclick="closeModal()">Отмена</button>
-        <button class="btn-submit" id="submitBtnText" onclick="sendToTelegram()">Отправить заказ</button>
+        <button class="btn-cancel" onclick="closeCartModal()">Закрыть</button>
+        <button class="btn-submit" id="submitBtnText" onclick="sendOrder()">Отправить заказ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Красивое встроенное окно «Спасибо за заказ» -->
+  <div class="modal" id="successModal">
+    <div class="modal-content">
+      <div class="success-box">
+        <div class="success-icon">✅</div>
+        <div class="success-title">Заказ отправлен!</div>
+        <div class="success-text">Спасибо за заказ! Наш администратор свяжется с вами в ближайшее время.</div>
+        <button class="btn-submit" style="width: 100%;" onclick="closeSuccessModal()">Отлично</button>
       </div>
     </div>
   </div>
@@ -428,9 +513,9 @@
     let orderType = 'table';
 
     const translations = {
-      ru: { add: "В корзину", order: "Оформить заказ", title: "Детали заказа", table: "🪑 Столик", delivery: "🚗 Доставка", tableLabel: "Номер столика:", phoneLabel: "Контактный телефон:", cancel: "Отмена", send: "Отправить заказ" },
-      en: { add: "Add", order: "Checkout", title: "Order Details", table: "🪑 Table", delivery: "🚗 Delivery", tableLabel: "Table number:", phoneLabel: "Contact phone:", cancel: "Cancel", send: "Send order" },
-      pl: { add: "Dodaj", order: "Zamów", title: "Szczegóły zamówienia", table: "🪑 Stolik", delivery: "🚗 Dostawa", tableLabel: "Numer stolika:", phoneLabel: "Telefon kontaktowy:", cancel: "Anuluj", send: "Wyślij zamówienie" }
+      ru: { add: "В корзину", order: "Корзина", title: "Ваш заказ", table: "🪑 Столик", delivery: "🚗 Доставка", tableLabel: "Номер столика:", phoneLabel: "Контактный телефон:", cancel: "Закрыть", send: "Отправить заказ" },
+      en: { add: "Add", order: "Cart", title: "Your Order", table: "🪑 Table", delivery: "🚗 Delivery", tableLabel: "Table number:", phoneLabel: "Contact phone:", cancel: "Close", send: "Send Order" },
+      pl: { add: "Dodaj", order: "Koszyk", title: "Twoje zamówienie", table: "🪑 Stolik", delivery: "🚗 Dostawa", tableLabel: "Numer stolika:", phoneLabel: "Telefon kontaktowy:", cancel: "Zamknij", send: "Wyślij zamówienie" }
     };
 
     function renderNav() {
@@ -469,6 +554,19 @@
       renderMenu();
     }
 
+    function changeQty(id, delta) {
+      if (cart[id]) {
+        cart[id] += delta;
+        if (cart[id] <= 0) delete cart[id];
+      }
+      updateCartBar();
+      renderCartItems();
+      renderMenu();
+      if (Object.keys(cart).length === 0) {
+        closeCartModal();
+      }
+    }
+
     function updateCartBar() {
       const cartBar = document.getElementById('cartBar');
       const cartCount = document.getElementById('cartCount');
@@ -493,6 +591,35 @@
       }
     }
 
+    function renderCartItems() {
+      const container = document.getElementById('cartItemsList');
+      let html = '';
+      let totalPrice = 0;
+
+      for (let id in cart) {
+        let item = findItemById(id);
+        let count = cart[id];
+        if (item) {
+          let cost = item.price * count;
+          totalPrice += cost;
+          html += `
+            <div class="cart-item-row">
+              <div class="cart-item-title">${item.title[currentLang]}</div>
+              <div class="qty-controls">
+                <button class="qty-btn" onclick="changeQty(${id}, -1)">-</button>
+                <span>${count}</span>
+                <button class="qty-btn" onclick="changeQty(${id}, 1)">+</button>
+              </div>
+              <div style="margin-left:12px; font-weight:bold; color:var(--accent);">${cost.toLocaleString()} тг</div>
+            </div>
+          `;
+        }
+      }
+
+      html += `<div style="text-align:right; font-weight:bold; font-size:16px; margin-top:12px; color:var(--accent);">Итого: ${totalPrice.toLocaleString()} тг</div>`;
+      container.innerHTML = html;
+    }
+
     function findItemById(id) {
       for (let cat of menuData) {
         for (let item of cat.items) {
@@ -511,7 +638,7 @@
 
     function updateTexts() {
       const t = translations[currentLang];
-      document.getElementById('modalTitleText').innerText = t.title;
+      document.getElementById('cartTitleText').innerText = t.title;
       document.getElementById('typeTableBtn').innerText = t.table;
       document.getElementById('typeDeliveryBtn').innerText = t.delivery;
       document.getElementById('tableLabelText').innerText = t.tableLabel;
@@ -535,12 +662,17 @@
       }
     }
 
-    function openModal() {
-      document.getElementById('orderModal').classList.add('open');
+    function openCartModal() {
+      renderCartItems();
+      document.getElementById('cartModal').classList.add('open');
     }
 
-    function closeModal() {
-      document.getElementById('orderModal').classList.remove('open');
+    function closeCartModal() {
+      document.getElementById('cartModal').classList.remove('open');
+    }
+
+    function closeSuccessModal() {
+      document.getElementById('successModal').classList.remove('open');
     }
 
     function setOrderType(type) {
@@ -558,7 +690,7 @@
       }
     }
 
-    async function sendToTelegram() {
+    async function sendOrder() {
       let message = "📝 *Новый заказ из меню Recept:*\n\n";
       
       if (orderType === 'table') {
@@ -610,11 +742,14 @@
         console.log("Фоновая отправка", e);
       }
 
-      alert("Спасибо за заказ! Наш администратор свяжется с вами в ближайшее время.");
-      
+      // Сбрасываем корзину и закрываем модалку корзины
       cart = {};
       updateCartBar();
-      closeModal();
+      closeCartModal();
+      renderMenu();
+
+      // Показываем стильное окно успехом
+      document.getElementById('successModal').classList.add('open');
     }
 
     renderNav();
