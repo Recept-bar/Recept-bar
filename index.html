@@ -231,7 +231,6 @@
       text-align: center;
     }
 
-    /* Элементы управления корзиной внутри модалки */
     .cart-item-row {
       display: flex;
       justify-content: space-between;
@@ -343,7 +342,6 @@
       font-weight: bold;
     }
 
-    /* Окно успешной отправки */
     .success-box {
       text-align: center;
       padding: 10px;
@@ -387,7 +385,7 @@
 
   <div class="container" id="menuContainer"></div>
 
-  <!-- Плашка снизу -->
+  <!-- Нижняя плашка -->
   <div class="cart-bar" id="cartBar">
     <div class="cart-info">
       <div>Выбрано: <span id="cartCount">0</span> блюд</div>
@@ -401,7 +399,6 @@
     <div class="modal-content">
       <div class="modal-title" id="cartTitleText">Ваш заказ</div>
       
-      <!-- Список блюд с кнопками + / - -->
       <div id="cartItemsList"></div>
 
       <div class="type-switcher">
@@ -437,7 +434,7 @@
     </div>
   </div>
 
-  <!-- Красивое встроенное окно «Спасибо за заказ» -->
+  <!-- Окно успешного оформления -->
   <div class="modal" id="successModal">
     <div class="modal-content">
       <div class="success-box">
@@ -691,64 +688,45 @@
     }
 
     async function sendOrder() {
-      let message = "📝 *Новый заказ из меню Recept:*\n\n";
-      
-      if (orderType === 'table') {
-        let table = document.getElementById('tableNumber').value;
-        message += `🪑 *Тип:* В заведении\n📍 *Столик:* ${table}\n\n`;
-      } else {
-        let phone = document.getElementById('clientPhone').value.trim();
-        if (!phone) {
-          alert("Пожалуйста, укажите контактный телефон!");
-          return;
-        }
-        message += `🚗 *Тип:* Доставка\n📞 *Телефон:* ${phone}\n\n`;
-      }
+      let orderDetails = {
+        type: orderType === 'table' ? 'В заведении' : 'Доставка',
+        details: orderType === 'table' ? document.getElementById('tableNumber').value : document.getElementById('clientPhone').value.trim(),
+        items: [],
+        total: 0
+      };
 
-      message += "*Состав заказа:*\n";
-      let totalPrice = 0;
+      if (orderType === 'delivery' && !orderDetails.details) {
+        alert("Пожалуйста, укажите контактный телефон!");
+        return;
+      }
 
       for (let id in cart) {
         let item = findItemById(id);
         let count = cart[id];
         if (item) {
           let cost = item.price * count;
-          totalPrice += cost;
-          message += `• ${item.title['ru']} x${count} (${cost.toLocaleString()} тг)\n`;
+          orderDetails.total += cost;
+          orderDetails.items.push(`${item.title['ru']} x${count} (${cost.toLocaleString()} тг)`);
         }
       }
 
-      message += `\n💰 *Итого к оплате:* ${totalPrice.toLocaleString()} тг`;
-
-      const t1 = "8875646081";
-      const t2 = "AAGAuhGE1W190Eg01RaZTz6EF4pJM-jFKVs";
-      const token = t1 + ":" + t2;
-      const chatId = "603052488";
-      
-      const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage`;
-      const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(telegramUrl)}`;
+      const makeUrl = "https://hook.eu1.make.com/2r9pbl9g4j7e613zmsmhahbnh89ndkfb";
 
       try {
-        await fetch(proxyUrl, {
+        await fetch(makeUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: chatId,
-            text: message,
-            parse_mode: 'Markdown'
-          })
+          body: JSON.stringify(orderDetails)
         });
       } catch (e) {
-        console.log("Фоновая отправка", e);
+        console.log("Ошибка вебхука", e);
       }
 
-      // Сбрасываем корзину и закрываем модалку корзины
       cart = {};
       updateCartBar();
       closeCartModal();
       renderMenu();
 
-      // Показываем стильное окно успехом
       document.getElementById('successModal').classList.add('open');
     }
 
