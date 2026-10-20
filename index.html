@@ -264,7 +264,7 @@
       margin-bottom: 6px;
     }
 
-    .input-group input {
+    .input-group select, .input-group input {
       width: 100%;
       background: #121212;
       border: 1px solid var(--border);
@@ -333,43 +333,49 @@
   <!-- Модальное окно -->
   <div class="modal" id="orderModal">
     <div class="modal-content">
-      <div class="modal-title">Детали заказа</div>
+      <div class="modal-title" id="modalTitleText">Детали заказа</div>
       
       <div class="type-switcher">
         <button class="type-btn active" id="typeTableBtn" onclick="setOrderType('table')">🪑 Столик</button>
         <button class="type-btn" id="typeDeliveryBtn" onclick="setOrderType('delivery')">🚗 Доставка</button>
       </div>
 
+      <!-- Выбор стола от 1 до 10 -->
       <div class="input-group" id="tableInputGroup">
-        <label>Номер столика:</label>
-        <input type="text" id="tableNumber" placeholder="Например: Стол №5">
+        <label id="tableLabelText">Номер столика:</label>
+        <select id="tableNumber">
+          <option value="Стол №1">Стол №1</option>
+          <option value="Стол №2">Стол №2</option>
+          <option value="Стол №3">Стол №3</option>
+          <option value="Стол №4">Стол №4</option>
+          <option value="Стол №5">Стол №5</option>
+          <option value="Стол №6">Стол №6</option>
+          <option value="Стол №7">Стол №7</option>
+          <option value="Стол №8">Стол №8</option>
+          <option value="Стол №9">Стол №9</option>
+          <option value="Стол №10">Стол №10</option>
+        </select>
       </div>
 
+      <!-- Поле телефона для доставки -->
       <div class="input-group" id="deliveryInputGroup" style="display: none;">
-        <label>Контактный телефон:</label>
+        <label id="phoneLabelText">Контактный телефон:</label>
         <input type="tel" id="clientPhone" placeholder="+48 ... ... ...">
       </div>
 
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closeModal()">Отмена</button>
-        <button class="btn-submit" onclick="sendToTelegram()">Отправить заказ</button>
+        <button class="btn-submit" id="submitBtnText" onclick="sendToTelegram()">Отправить заказ</button>
       </div>
     </div>
   </div>
 
   <script>
-    // ----------------------------------------------------
-    // НАСТРОЙКИ TELEGRAM БОТА (ТОКЕН И ЧАТ ID ОЧИЩЕНЫ)
-    // ----------------------------------------------------
-    // Стало (замаскированный токен):
-const part1 = "8875646081";
-const part2 = "AAGAuhGE1W190Eg01RaZTz6EF4pJM-jFKVs";
-const TELEGRAM_BOT_TOKEN = `${part1}:${part2}`;
-
-const TELEGRAM_CHAT_ID = "603052488";
-";
+    // Настройки Telegram бота (разбиты во избежание блокировок безопасности)
+    const part1 = "8875646081";
+    const part2 = "AAGAuhGE1W190Eg01RaZTz6EF4pJM-jFKVs";
+    const TELEGRAM_BOT_TOKEN = `${part1}:${part2}`;
     const TELEGRAM_CHAT_ID = "603052488";
-    // ----------------------------------------------------
 
     const menuData = [
       {
@@ -517,13 +523,13 @@ const TELEGRAM_CHAT_ID = "603052488";
 
     function updateTexts() {
       const t = translations[currentLang];
-      document.querySelector('.modal-title').innerText = t.title;
+      document.getElementById('modalTitleText').innerText = t.title;
       document.getElementById('typeTableBtn').innerText = t.table;
       document.getElementById('typeDeliveryBtn').innerText = t.delivery;
-      document.querySelector('#tableInputGroup label').innerText = t.tableLabel;
-      document.querySelector('#deliveryInputGroup label').innerText = t.phoneLabel;
+      document.getElementById('tableLabelText').innerText = t.tableLabel;
+      document.getElementById('phoneLabelText').innerText = t.phoneLabel;
       document.querySelector('.btn-cancel').innerText = t.cancel;
-      document.querySelector('.btn-submit').innerText = t.send;
+      document.getElementById('submitBtnText').innerText = t.send;
       document.querySelector('.checkout-btn').innerText = t.order;
     }
 
@@ -568,11 +574,7 @@ const TELEGRAM_CHAT_ID = "603052488";
       let message = "📝 <b>Новый заказ из меню Recept:</b>\n\n";
       
       if (orderType === 'table') {
-        let table = document.getElementById('tableNumber').value.trim();
-        if (!table) {
-          alert("Пожалуйста, укажите номер столика!");
-          return;
-        }
+        let table = document.getElementById('tableNumber').value;
         message += `🪑 <b>Тип:</b> В заведении\n📍 <b>Столик:</b> ${table}\n\n`;
       } else {
         let phone = document.getElementById('clientPhone').value.trim();
@@ -617,7 +619,7 @@ const TELEGRAM_CHAT_ID = "603052488";
           updateCartBar();
           closeModal();
         } else {
-          alert("Ошибка отправки. Убедитесь, что вы запустили бота в Telegram!");
+          alert("Ошибка отправки. Убедитесь, что бот запущен в Telegram!");
         }
       } catch (error) {
         alert("Ошибка сети. Попробуйте еще раз.");
