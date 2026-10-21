@@ -236,20 +236,20 @@
             <div id="typeSelectionBlock" class="space-y-4">
                 <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 text-center" id="labelChooseType">Выберите вариант заказа</label>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <button type="button" onclick="selectOrderType('table')" class="bg-brand-dark hover:bg-brand-border border border-brand-gold/40 hover:border-brand-gold p-5 rounded-2xl flex flex-col items-center justify-center space-y-2 transition-all">
+                        <i class="fa-solid fa-glass-cheers text-brand-gold text-2xl"></i>
+                        <span class="text-white font-bold text-sm" id="btnTypeTable">Заказ у столика (в баре)</span>
+                    </button>
                     <button type="button" onclick="selectOrderType('delivery')" class="bg-brand-dark hover:bg-brand-border border border-brand-gold/40 hover:border-brand-gold p-5 rounded-2xl flex flex-col items-center justify-center space-y-2 transition-all">
                         <i class="fa-solid fa-truck-fast text-brand-gold text-2xl"></i>
                         <span class="text-white font-bold text-sm" id="btnTypeDelivery">Доставка</span>
-                    </button>
-                    <button type="button" onclick="selectOrderType('table')" class="bg-brand-dark hover:bg-brand-border border border-brand-gold/40 hover:border-brand-gold p-5 rounded-2xl flex flex-col items-center justify-center space-y-2 transition-all">
-                        <i class="fa-solid fa-glass-cheers text-brand-gold text-2xl"></i>
-                        <span class="text-white font-bold text-sm" id="btnTypeTable">Заказ у столика</span>
                     </button>
                 </div>
             </div>
 
             <!-- Step 2: Form Fields -->
             <form id="checkoutForm" onsubmit="submitOrder(event)" class="space-y-4 hidden mt-4">
-                <!-- Delivery Fields -->
+                <!-- Delivery Fields ONLY -->
                 <div id="deliveryFields" class="space-y-4 hidden">
                     <div>
                         <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelName">ВАШЕ ИМЯ</label>
@@ -273,11 +273,22 @@
                     </div>
                 </div>
 
-                <!-- Table Order Field ONLY -->
+                <!-- Table Order Dropdown ONLY (Tables 1-10) -->
                 <div id="tableFields" class="space-y-4 hidden">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelTableNum">НОМЕР СТОЛИКА</label>
-                        <input type="text" id="orderTable" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelTableSelect">ВЫБЕРИТЕ НОМЕР СТОЛИКА</label>
+                        <select id="orderTableSelect" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+                            <option value="1">Столик № 1</option>
+                            <option value="2">Столик № 2</option>
+                            <option value="3">Столик № 3</option>
+                            <option value="4">Столик № 4</option>
+                            <option value="5">Столик № 5</option>
+                            <option value="6">Столик № 6</option>
+                            <option value="7">Столик № 7</option>
+                            <option value="8">Столик № 8</option>
+                            <option value="9">Столик № 9</option>
+                            <option value="10">Столик № 10</option>
+                        </select>
                     </div>
                 </div>
 
@@ -362,7 +373,8 @@
 
     <!-- Application Script -->
     <script>
-        const MAKE_WEBHOOK_URL = 'https://hook.eu1.make.com/2r9pbl9g4j7e613zmsmhahbnh89ndkfb';
+        // Ваш рабочий URL Webhook
+        const MAKE_WEBHOOK_URL = 'https://hook.eu1.make.com/2r9pb19g4j75e46vlyy5z1nsh1i3ly5d';
 
         let selectedType = null; // 'delivery' or 'table'
 
@@ -380,8 +392,8 @@
                 modalTitle: 'Оформление заказа',
                 labelChooseType: 'Выберите вариант заказа',
                 btnTypeDelivery: 'Доставка',
-                btnTypeTable: 'Заказ у столика',
-                labelTableNum: 'НОМЕР СТОЛИКА',
+                btnTypeTable: 'Заказ у столика (в баре)',
+                labelTableSelect: 'ВЫБЕРИТЕ НОМЕР СТОЛИКА',
                 labelName: 'ВАШЕ ИМЯ',
                 labelPhone: 'НОМЕР ТЕЛЕФОНА',
                 labelAddress: 'АДРЕС ДОСТАВКИ',
@@ -422,7 +434,7 @@
                 labelChooseType: 'Wybierz opcję zamówienia',
                 btnTypeDelivery: 'Dostawa',
                 btnTypeTable: 'Zamówienie przy stoliku',
-                labelTableNum: 'NUMER STOLIKA',
+                labelTableSelect: 'WYBIERZ NUMER STOLIKA',
                 labelName: 'TWOJE IMIĘ',
                 labelPhone: 'NUMER TELEFONU',
                 labelAddress: 'ADRES DOSTAWY',
@@ -463,7 +475,7 @@
                 labelChooseType: 'Choose Order Type',
                 btnTypeDelivery: 'Delivery',
                 btnTypeTable: 'Order at Table',
-                labelTableNum: 'TABLE NUMBER',
+                labelTableSelect: 'SELECT TABLE NUMBER',
                 labelName: 'YOUR NAME',
                 labelPhone: 'PHONE NUMBER',
                 labelAddress: 'DELIVERY ADDRESS',
@@ -555,7 +567,7 @@
             document.getElementById('currentLangText').innerText = lang;
             document.getElementById('langDropdown').classList.add('hidden');
 
-            ['navAbout','cartBtnText','heroBtnMenu','heroBtnInfo','cartTitle','subtotalLabel','deliveryInfoText','totalLabel','checkoutBtnText','modalTitle','labelChooseType','btnTypeDelivery','btnTypeTable','labelTableNum','labelName','labelPhone','labelAddress','labelPayment','labelComment','payBlik','payTerminal','payCash','confirmOrderBtnText','successTitle','successDesc','footerHours','aboutModalTitle','aboutModalDesc','termsTitle','termHours','termTime','termPrice'].forEach(id => {
+            ['navAbout','cartBtnText','heroBtnMenu','heroBtnInfo','cartTitle','subtotalLabel','deliveryInfoText','totalLabel','checkoutBtnText','modalTitle','labelChooseType','btnTypeDelivery','btnTypeTable','labelTableSelect','labelName','labelPhone','labelAddress','labelPayment','labelComment','payBlik','payTerminal','payCash','confirmOrderBtnText','successTitle','successDesc','footerHours','aboutModalTitle','aboutModalDesc','termsTitle','termHours','termTime','termPrice'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el && langObj[id]) el.innerHTML = langObj[id];
             });
@@ -581,11 +593,9 @@
                 document.getElementById('orderName').required = true;
                 document.getElementById('orderPhone').required = true;
                 document.getElementById('orderAddress').required = true;
-                document.getElementById('orderTable').required = false;
             } else {
                 tableFields.classList.remove('hidden');
                 deliveryFields.classList.add('hidden');
-                document.getElementById('orderTable').required = true;
                 document.getElementById('orderName').required = false;
                 document.getElementById('orderPhone').required = false;
                 document.getElementById('orderAddress').required = false;
@@ -786,7 +796,7 @@
 
             if(selectedType === 'table') {
                 typeLabel = "Заказ у столика";
-                const tableNum = document.getElementById('orderTable').value;
+                const tableNum = document.getElementById('orderTableSelect').value;
                 detailsText = `Столик: №${tableNum}`;
             } else {
                 typeLabel = "Доставка";
