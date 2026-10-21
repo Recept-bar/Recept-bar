@@ -224,47 +224,74 @@
         <div class="relative bg-[#0D1526] border border-brand-border rounded-2xl w-full max-w-lg p-6 sm:p-8 shadow-2xl z-10 overflow-y-auto max-h-[90vh]">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-xl font-bold text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-truck-fast text-brand-gold"></i>
+                    <i class="fa-solid fa-paper-plane text-brand-gold"></i>
                     <span id="modalTitle">Оформление заказа</span>
                 </h3>
                 <button onclick="closeCheckoutModal()" class="text-gray-400 hover:text-white p-2">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
-            <form id="checkoutForm" onsubmit="submitOrder(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelOrderType">ТИП ЗАКАЗА</label>
-                    <select id="orderType" onchange="handleOrderTypeChange(this.value)" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
-                        <option value="Delivery" id="optDelivery">Доставка</option>
-                        <option value="Table" id="optTable">Заказ у столика (в баре)</option>
-                    </select>
+
+            <!-- Step 1: Type Selection Buttons -->
+            <div id="typeSelectionBlock" class="space-y-4">
+                <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 text-center" id="labelChooseType">Выберите вариант заказа</label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <button type="button" onclick="selectOrderType('delivery')" class="bg-brand-dark hover:bg-brand-border border border-brand-gold/40 hover:border-brand-gold p-5 rounded-2xl flex flex-col items-center justify-center space-y-2 transition-all">
+                        <i class="fa-solid fa-truck-fast text-brand-gold text-2xl"></i>
+                        <span class="text-white font-bold text-sm" id="btnTypeDelivery">Доставка</span>
+                    </button>
+                    <button type="button" onclick="selectOrderType('table')" class="bg-brand-dark hover:bg-brand-border border border-brand-gold/40 hover:border-brand-gold p-5 rounded-2xl flex flex-col items-center justify-center space-y-2 transition-all">
+                        <i class="fa-solid fa-glass-cheers text-brand-gold text-2xl"></i>
+                        <span class="text-white font-bold text-sm" id="btnTypeTable">Заказ у столика</span>
+                    </button>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelName">ВАШЕ ИМЯ</label>
-                    <input type="text" required id="orderName" placeholder="Александр" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+            </div>
+
+            <!-- Step 2: Form Fields -->
+            <form id="checkoutForm" onsubmit="submitOrder(event)" class="space-y-4 hidden mt-4">
+                <!-- Delivery Fields -->
+                <div id="deliveryFields" class="space-y-4 hidden">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelName">ВАШЕ ИМЯ</label>
+                        <input type="text" id="orderName" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelPhone">НОМЕР ТЕЛЕФОНА</label>
+                        <input type="tel" id="orderPhone" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelAddress">АДРЕС ДОСТАВКИ</label>
+                        <textarea id="orderAddress" rows="2" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelPayment">СПОСОБ ОПЛАТЫ</label>
+                        <select id="orderPayment" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+                            <option value="BLIK / Online" id="payBlik">BLIK / Онлайн-карта</option>
+                            <option value="Terminal" id="payTerminal">Карта курьеру (терминал)</option>
+                            <option value="Cash" id="payCash">Наличные курьеру</option>
+                        </select>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelPhone">НОМЕР ТЕЛЕФОНА</label>
-                    <input type="tel" required id="orderPhone" placeholder="+48 123 456 789" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+
+                <!-- Table Order Field ONLY -->
+                <div id="tableFields" class="space-y-4 hidden">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelTableNum">НОМЕР СТОЛИКА</label>
+                        <input type="text" id="orderTable" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelAddress">АДРЕС ДОСТАВКИ</label>
-                    <textarea required id="orderAddress" rows="2" placeholder="Pętkowo 18, Środa Wielkopolska" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold"></textarea>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelPayment">СПОСОБ ОПЛАТЫ</label>
-                    <select id="orderPayment" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
-                        <option value="BLIK / Online" id="payBlik">BLIK / Онлайн-карта</option>
-                        <option value="Terminal" id="payTerminal">Карта курьеру (терминал)</option>
-                        <option value="Cash" id="payCash">Наличные курьеру</option>
-                    </select>
-                </div>
+
+                <!-- Common Comment Field -->
                 <div>
                     <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelComment">КОММЕНТАРИЙ К ЗАКАЗУ</label>
-                    <input type="text" id="orderComment" placeholder="Позвоните за 15 минут до приезда" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+                    <input type="text" id="orderComment" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
                 </div>
-                <div class="pt-4">
-                    <button type="submit" id="submitBtn" class="w-full bg-brand-gold hover:bg-brand-goldHover text-brand-dark py-4 rounded-xl font-bold shadow-lg transition-transform active:scale-95">
+
+                <div class="pt-4 flex space-x-3">
+                    <button type="button" onclick="resetOrderType()" class="w-1/3 bg-brand-border hover:bg-brand-border/70 text-gray-300 py-4 rounded-xl font-semibold text-sm transition-colors">
+                        ← Назад
+                    </button>
+                    <button type="submit" id="submitBtn" class="w-2/3 bg-brand-gold hover:bg-brand-goldHover text-brand-dark py-4 rounded-xl font-bold shadow-lg transition-transform active:scale-95">
                         <span id="confirmOrderBtnText">Подтвердить заказ</span>
                     </button>
                 </div>
@@ -337,6 +364,8 @@
     <script>
         const MAKE_WEBHOOK_URL = 'https://hook.eu1.make.com/a4y423l0oepxwr294l9t1y1106a74y2k';
 
+        let selectedType = null; // 'delivery' or 'table'
+
         const i18n = {
             ru: {
                 navAbout: 'О нас',
@@ -349,9 +378,10 @@
                 totalLabel: 'Итого к оплате',
                 checkoutBtnText: 'Оформить заказ',
                 modalTitle: 'Оформление заказа',
-                labelOrderType: 'ТИП ЗАКАЗА',
-                optDelivery: 'Доставка',
-                optTable: 'Заказ у столика (в баре)',
+                labelChooseType: 'Выберите вариант заказа',
+                btnTypeDelivery: 'Доставка',
+                btnTypeTable: 'Заказ у столика',
+                labelTableNum: 'НОМЕР СТОЛИКА',
                 labelName: 'ВАШЕ ИМЯ',
                 labelPhone: 'НОМЕР ТЕЛЕФОНА',
                 labelAddress: 'АДРЕС ДОСТАВКИ',
@@ -389,9 +419,10 @@
                 totalLabel: 'Razem do zapłaty',
                 checkoutBtnText: 'Złóż zamówienie',
                 modalTitle: 'Składanie zamówienia',
-                labelOrderType: 'TYP ZAMÓWIENIA',
-                optDelivery: 'Dostawa',
-                optTable: 'Zamówienie przy stoliku (w barze)',
+                labelChooseType: 'Wybierz opcję zamówienia',
+                btnTypeDelivery: 'Dostawa',
+                btnTypeTable: 'Zamówienie przy stoliku',
+                labelTableNum: 'NUMER STOLIKA',
                 labelName: 'TWOJE IMIĘ',
                 labelPhone: 'NUMER TELEFONU',
                 labelAddress: 'ADRES DOSTAWY',
@@ -429,9 +460,10 @@
                 totalLabel: 'Total amount',
                 checkoutBtnText: 'Checkout',
                 modalTitle: 'Checkout Order',
-                labelOrderType: 'ORDER TYPE',
-                optDelivery: 'Delivery',
-                optTable: 'Order at table (in bar)',
+                labelChooseType: 'Choose Order Type',
+                btnTypeDelivery: 'Delivery',
+                btnTypeTable: 'Order at Table',
+                labelTableNum: 'TABLE NUMBER',
                 labelName: 'YOUR NAME',
                 labelPhone: 'PHONE NUMBER',
                 labelAddress: 'DELIVERY ADDRESS',
@@ -523,7 +555,7 @@
             document.getElementById('currentLangText').innerText = lang;
             document.getElementById('langDropdown').classList.add('hidden');
 
-            ['navAbout','cartBtnText','heroBtnMenu','heroBtnInfo','cartTitle','subtotalLabel','deliveryInfoText','totalLabel','checkoutBtnText','modalTitle','labelOrderType','optDelivery','optTable','labelName','labelPhone','labelAddress','labelPayment','labelComment','payBlik','payTerminal','payCash','confirmOrderBtnText','successTitle','successDesc','footerHours','aboutModalTitle','aboutModalDesc','termsTitle','termHours','termTime','termPrice'].forEach(id => {
+            ['navAbout','cartBtnText','heroBtnMenu','heroBtnInfo','cartTitle','subtotalLabel','deliveryInfoText','totalLabel','checkoutBtnText','modalTitle','labelChooseType','btnTypeDelivery','btnTypeTable','labelTableNum','labelName','labelPhone','labelAddress','labelPayment','labelComment','payBlik','payTerminal','payCash','confirmOrderBtnText','successTitle','successDesc','footerHours','aboutModalTitle','aboutModalDesc','termsTitle','termHours','termTime','termPrice'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el && langObj[id]) el.innerHTML = langObj[id];
             });
@@ -533,16 +565,37 @@
             renderCartItems();
         }
 
-        function handleOrderTypeChange(value) {
-            const labelAddr = document.getElementById('labelAddress');
-            const inputAddr = document.getElementById('orderAddress');
-            if(value === 'Table') {
-                labelAddr.innerText = currentLang === 'RU' ? 'НОМЕР СТОЛИКА' : (currentLang === 'PL' ? 'NUMER STOLIKA' : 'TABLE NUMBER');
-                inputAddr.placeholder = currentLang === 'RU' ? 'Столик №3' : 'Stolik nr 3';
+        function selectOrderType(type) {
+            selectedType = type;
+            document.getElementById('typeSelectionBlock').classList.add('hidden');
+            
+            const form = document.getElementById('checkoutForm');
+            const deliveryFields = document.getElementById('deliveryFields');
+            const tableFields = document.getElementById('tableFields');
+
+            form.classList.remove('hidden');
+
+            if(type === 'delivery') {
+                deliveryFields.classList.remove('hidden');
+                tableFields.classList.add('hidden');
+                document.getElementById('orderName').required = true;
+                document.getElementById('orderPhone').required = true;
+                document.getElementById('orderAddress').required = true;
+                document.getElementById('orderTable').required = false;
             } else {
-                labelAddr.innerText = currentLang === 'RU' ? 'АДРЕС ДОСТАВКИ' : (currentLang === 'PL' ? 'ADRES DOSTAWY' : 'DELIVERY ADDRESS');
-                inputAddr.placeholder = 'Pętkowo 18, Środa Wielkopolska';
+                tableFields.classList.remove('hidden');
+                deliveryFields.classList.add('hidden');
+                document.getElementById('orderTable').required = true;
+                document.getElementById('orderName').required = false;
+                document.getElementById('orderPhone').required = false;
+                document.getElementById('orderAddress').required = false;
             }
+        }
+
+        function resetOrderType() {
+            selectedType = null;
+            document.getElementById('checkoutForm').classList.add('hidden');
+            document.getElementById('typeSelectionBlock').classList.remove('hidden');
         }
 
         function renderCategories() {
@@ -696,6 +749,7 @@
 
         function openCheckoutModal() {
             toggleCartDrawer(false);
+            resetOrderType();
             document.getElementById('checkoutModal').classList.remove('hidden');
         }
 
@@ -724,19 +778,31 @@
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
 
-            const orderType = document.getElementById('orderType').value;
-            const name = document.getElementById('orderName').value;
-            const phone = document.getElementById('orderPhone').value;
-            const address = document.getElementById('orderAddress').value;
-            const payment = document.getElementById('orderPayment').value;
-            const comment = document.getElementById('orderComment').value;
-
             const itemsText = cart.map(c => `${c.item.names.ru} x${c.quantity} (${c.item.pricePln * c.quantity} zł)`).join('\n');
             const totalPln = cart.reduce((sum, c) => sum + c.item.pricePln * c.quantity, 0);
 
+            let detailsText = '';
+            let typeLabel = '';
+
+            if(selectedType === 'table') {
+                typeLabel = "Заказ у столика";
+                const tableNum = document.getElementById('orderTable').value;
+                detailsText = `Столик: №${tableNum}`;
+            } else {
+                typeLabel = "Доставка";
+                const name = document.getElementById('orderName').value;
+                const phone = document.getElementById('orderPhone').value;
+                const address = document.getElementById('orderAddress').value;
+                const payment = document.getElementById('orderPayment').value;
+                detailsText = `Имя: ${name}\nТел: ${phone}\nАдрес: ${address}\nОплата: ${payment}`;
+            }
+
+            const comment = document.getElementById('orderComment').value;
+            if(comment) detailsText += `\nКоммент: ${comment}`;
+
             const payload = {
-                type: orderType === 'Table' ? "Заказ у столика" : "Доставка",
-                details: `Имя: ${name}\nТел: ${phone}\n${orderType === 'Table' ? 'Столик' : 'Адрес'}: ${address}\nОплата: ${payment}` + (comment ? `\nКоммент: ${comment}` : ''),
+                type: typeLabel,
+                details: detailsText,
                 items: itemsText,
                 total: `${totalPln} zł`
             };
