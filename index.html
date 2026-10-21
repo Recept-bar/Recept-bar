@@ -111,39 +111,23 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="relative overflow-hidden py-10 md:py-16 border-b border-brand-border bg-gradient-to-b from-brand-card/40 to-brand-dark">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div>
-                <div class="inline-flex items-center space-x-2 bg-brand-gold/10 border border-brand-gold/30 px-3.5 py-1.5 rounded-full text-brand-gold text-xs font-semibold mb-6">
-                    <i class="fa-solid fa-star text-xs"></i>
-                    <span id="heroBadgeText">Премиальная доставка бара</span>
-                </div>
-                <h1 id="heroTitle" class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4 font-brand">
-                    Изысканный вкус <br><span class="text-brand-gold">у вас дома</span>
-                </h1>
-                <p class="text-brand-gold italic font-brand text-lg mb-6">Recept for your happiness</p>
-                <p id="heroDesc" class="text-gray-400 text-base sm:text-lg mb-8 max-w-lg leading-relaxed">
-                    Попробуйте фирменные холодные закуски, свежие морепродукты и горячие блюда от шеф-повара RECEPT BAR. Быстрая доставка в удобное время.
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <button onclick="scrollToMenu()" class="bg-brand-gold hover:bg-brand-goldHover text-brand-dark px-8 py-3.5 rounded-xl font-bold shadow-lg transition-all transform hover:-translate-y-0.5">
-                        <span id="heroBtnMenu">Смотреть меню</span>
-                    </button>
-                    <button onclick="openDeliveryTermsModal()" class="bg-brand-card hover:bg-brand-border text-white border border-brand-border px-6 py-3.5 rounded-xl font-medium transition-colors">
-                        <span id="heroBtnInfo">Условия доставки</span>
-                    </button>
-                </div>
-            </div>
-            <div class="relative flex justify-center">
-                <div class="w-full max-w-md bg-gradient-to-br from-brand-card to-brand-border p-2 rounded-3xl border border-brand-gold/20 shadow-2xl relative overflow-hidden group">
-                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80" alt="Delicious dish" class="w-full h-72 sm:h-80 object-cover rounded-2xl group-hover:scale-105 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/90 via-transparent to-transparent rounded-2xl flex flex-col justify-end p-6">
-                        <span class="text-brand-gold text-xs font-bold uppercase tracking-wider mb-1" id="heroHitLabel">Хит продаж</span>
-                        <h3 class="text-white text-xl font-bold" id="heroHitName">Тар-тар из семги</h3>
-                        <p class="text-gray-300 text-sm mt-1">250гр • 24 zł</p>
-                    </div>
-                </div>
+    <!-- Clean Hero Section -->
+    <section class="relative overflow-hidden py-10 md:py-14 border-b border-brand-border bg-gradient-to-b from-brand-card/40 to-brand-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center text-center">
+            <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-widest font-brand mb-2">
+                RECEPT BAR
+            </h1>
+            <p class="text-brand-gold italic font-brand text-lg sm:text-2xl mb-8">
+                Recept for your happiness
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="scrollToMenu()" class="bg-brand-gold hover:bg-brand-goldHover text-brand-dark px-8 py-3.5 rounded-xl font-bold shadow-lg transition-all transform hover:-translate-y-0.5">
+                    <span id="heroBtnMenu">Смотреть меню</span>
+                </button>
+                <button onclick="openDeliveryTermsModal()" class="bg-brand-card hover:bg-brand-border text-white border border-brand-border px-6 py-3.5 rounded-xl font-medium transition-colors">
+                    <span id="heroBtnInfo">Условия доставки</span>
+                </button>
             </div>
         </div>
     </section>
@@ -177,17 +161,17 @@
                 <p class="text-brand-gold italic font-brand text-xs">RECEPT FOR YOUR HAPPINESS</p>
             </div>
             <div>
-                <h4 class="text-white font-semibold mb-4 text-base" id="footerContactsTitle">Контакты и время</h4>
+                <h4 class="text-white font-semibold mb-4 text-base font-brand">Contact</h4>
                 <p class="mb-2"><i class="fa-solid fa-clock text-brand-gold mr-2"></i> <span id="footerHours">Ежедневно с 12:00 до 02:00</span></p>
                 <p class="mb-2"><i class="fa-solid fa-phone text-brand-gold mr-2"></i> +48 123 456 789</p>
                 <p class="mb-2"><i class="fa-solid fa-location-dot text-brand-gold mr-2"></i> Pętkowo 18, Środa Wielkopolska</p>
                 <p><i class="fa-brands fa-instagram text-brand-gold mr-2"></i> @recept.bar</p>
             </div>
             <div>
-                <h4 class="text-white font-semibold mb-4 text-base" id="footerPaymentTitle">Способы оплаты</h4>
+                <h4 class="text-white font-semibold mb-4 text-base font-brand">Payment Methods</h4>
                 <div class="flex space-x-3 text-2xl text-gray-300">
                     <i class="fa-solid fa-credit-card" title="Банковская карта"></i>
-                    <i class="fa-solid fa-money-bill-wave" title="Наличные курьеру"></i>
+                    <i class="fa-solid fa-money-bill-wave" title="Наличные"></i>
                     <i class="fa-solid fa-mobile-screen-button" title="BLIK / Терминал"></i>
                 </div>
                 <p class="text-xs text-gray-500 mt-4">© 2026 RECEPT BAR. All rights reserved.</p>
@@ -249,12 +233,19 @@
             </div>
             <form id="checkoutForm" onsubmit="submitOrder(event)" class="space-y-4">
                 <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelOrderType">ТИП ЗАКАЗА</label>
+                    <select id="orderType" onchange="handleOrderTypeChange(this.value)" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+                        <option value="Delivery" id="optDelivery">Доставка</option>
+                        <option value="Table" id="optTable">Заказ у столика (в баре)</option>
+                    </select>
+                </div>
+                <div>
                     <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelName">ВАШЕ ИМЯ</label>
-                    <input type="text" required id="orderName" value="" placeholder="Александр" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+                    <input type="text" required id="orderName" placeholder="Александр" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelPhone">НОМЕР ТЕЛЕФОНА</label>
-                    <input type="tel" required id="orderPhone" value="" placeholder="+48 123 456 789" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+                    <input type="tel" required id="orderPhone" placeholder="+48 123 456 789" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelAddress">АДРЕС ДОСТАВКИ</label>
@@ -270,7 +261,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelComment">КОММЕНТАРИЙ К ЗАКАЗУ</label>
-                    <input type="text" id="orderComment" value="" placeholder="Позвоните за 15 минут до приезда" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+                    <input type="text" id="orderComment" placeholder="Позвоните за 15 минут до приезда" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
                 </div>
                 <div class="pt-4">
                     <button type="submit" id="submitBtn" class="w-full bg-brand-gold hover:bg-brand-goldHover text-brand-dark py-4 rounded-xl font-bold shadow-lg transition-transform active:scale-95">
@@ -316,7 +307,7 @@
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
-            <div class="space-y-3 text-sm text-gray-300 leading-relaxed" id="termsBody">
+            <div class="space-y-3 text-sm text-gray-300 leading-relaxed">
                 <p id="termHours">🕒 <strong>Время работы:</strong> Ежедневно с 12:00 до 02:00 ночи.</p>
                 <p id="termTime">🚀 <strong>Время доставки:</strong> Среднее время составляет от 45 до 60 минут.</p>
                 <p id="termPrice">💰 <strong>Детали:</strong> Стоимость и зону доставки уточняет оператор во время звонка.</p>
@@ -350,18 +341,17 @@
             ru: {
                 navAbout: 'О нас',
                 cartBtnText: 'Корзина',
-                heroBadgeText: 'Премиальная доставка бара',
-                heroTitle: 'Изысканный вкус <br><span class="text-brand-gold">у вас дома</span>',
-                heroDesc: 'Попробуйте фирменные холодные закуски, свежие морепродукты и горячие блюда от шеф-повара RECEPT BAR. Быстрая доставка в удобное время.',
                 heroBtnMenu: 'Смотреть меню',
                 heroBtnInfo: 'Условия доставки',
-                heroHitLabel: 'Хит продаж',
                 cartTitle: 'Ваша корзина',
                 subtotalLabel: 'Сумма заказа',
                 deliveryInfoText: 'ℹ️ Стоимость и детали доставки уточнит оператор при подтверждении заказа.',
                 totalLabel: 'Итого к оплате',
                 checkoutBtnText: 'Оформить заказ',
                 modalTitle: 'Оформление заказа',
+                labelOrderType: 'ТИП ЗАКАЗА',
+                optDelivery: 'Доставка',
+                optTable: 'Заказ у столика (в баре)',
                 labelName: 'ВАШЕ ИМЯ',
                 labelPhone: 'НОМЕР ТЕЛЕФОНА',
                 labelAddress: 'АДРЕС ДОСТАВКИ',
@@ -373,9 +363,7 @@
                 confirmOrderBtnText: 'Подтвердить заказ',
                 successTitle: 'Заказ успешно оформлен!',
                 successDesc: 'Спасибо за ваш заказ! Наш администратор свяжется с вами в течение 5 минут.',
-                footerContactsTitle: 'Контакты и время',
                 footerHours: 'Ежедневно с 12:00 до 02:00',
-                footerPaymentTitle: 'Способы оплаты',
                 aboutModalTitle: 'О баре RECEPT',
                 aboutModalDesc: 'RECEPT BAR — напитки, отличная кухня и удобная доставка.',
                 termsTitle: 'Условия доставки RECEPT BAR',
@@ -393,18 +381,17 @@
             pl: {
                 navAbout: 'O nas',
                 cartBtnText: 'Koszyk',
-                heroBadgeText: 'Dostawa premium z baru',
-                heroTitle: 'Wykwintny smak <br><span class="text-brand-gold">w Twoim domu</span>',
-                heroDesc: 'Spróbuj autorskich przekąsek, świeżych owoców morza i dań gorących od szefa kuchni RECEPT BAR.',
                 heroBtnMenu: 'Zobacz menu',
                 heroBtnInfo: 'Warunki dostawy',
-                heroHitLabel: 'Bestseller',
                 cartTitle: 'Twój koszyk',
                 subtotalLabel: 'Suma zamówienia',
                 deliveryInfoText: 'ℹ️ Koszt i szczegóły dostawy zostaną potwierdzone przez operatora.',
                 totalLabel: 'Razem do zapłaty',
                 checkoutBtnText: 'Złóż zamówienie',
                 modalTitle: 'Składanie zamówienia',
+                labelOrderType: 'TYP ZAMÓWIENIA',
+                optDelivery: 'Dostawa',
+                optTable: 'Zamówienie przy stoliku (w barze)',
                 labelName: 'TWOJE IMIĘ',
                 labelPhone: 'NUMER TELEFONU',
                 labelAddress: 'ADRES DOSTAWY',
@@ -416,9 +403,7 @@
                 confirmOrderBtnText: 'Potwierdź zamówienie',
                 successTitle: 'Zamówienie przyjęte!',
                 successDesc: 'Dziękujemy za zamówienie! Skontaktujemy się z Tobą w ciągu 5 minut.',
-                footerContactsTitle: 'Kontakt i godziny',
                 footerHours: 'Codziennie od 12:00 do 02:00',
-                footerPaymentTitle: 'Płatności',
                 aboutModalTitle: 'O barze RECEPT',
                 aboutModalDesc: 'RECEPT BAR — napoje, wyśmienita kuchnia i wygodna dostawa.',
                 termsTitle: 'Warunki dostawy RECEPT BAR',
@@ -436,18 +421,17 @@
             en: {
                 navAbout: 'About Us',
                 cartBtnText: 'Cart',
-                heroBadgeText: 'Premium Bar Delivery',
-                heroTitle: 'Exquisite taste <br><span class="text-brand-gold">at your home</span>',
-                heroDesc: 'Try signature cold appetizers, fresh seafood, and hot dishes from RECEPT BAR chef.',
                 heroBtnMenu: 'View Menu',
                 heroBtnInfo: 'Delivery Terms',
-                heroHitLabel: 'Bestseller',
                 cartTitle: 'Your Cart',
                 subtotalLabel: 'Subtotal',
                 deliveryInfoText: 'ℹ️ Delivery cost and details will be confirmed by the operator.',
                 totalLabel: 'Total amount',
                 checkoutBtnText: 'Checkout',
                 modalTitle: 'Checkout Order',
+                labelOrderType: 'ORDER TYPE',
+                optDelivery: 'Delivery',
+                optTable: 'Order at table (in bar)',
                 labelName: 'YOUR NAME',
                 labelPhone: 'PHONE NUMBER',
                 labelAddress: 'DELIVERY ADDRESS',
@@ -459,9 +443,7 @@
                 confirmOrderBtnText: 'Confirm Order',
                 successTitle: 'Order Placed!',
                 successDesc: 'Thank you for your order! We will contact you within 5 minutes.',
-                footerContactsTitle: 'Contacts & Hours',
                 footerHours: 'Daily from 12:00 to 02:00',
-                footerPaymentTitle: 'Payment Methods',
                 aboutModalTitle: 'About RECEPT BAR',
                 aboutModalDesc: 'RECEPT BAR — drinks, fine cuisine, and convenient delivery.',
                 termsTitle: 'RECEPT BAR Delivery Terms',
@@ -541,16 +523,26 @@
             document.getElementById('currentLangText').innerText = lang;
             document.getElementById('langDropdown').classList.add('hidden');
 
-            ['navAbout','cartBtnText','heroBadgeText','heroDesc','heroBtnMenu','heroBtnInfo','heroHitLabel','cartTitle','subtotalLabel','deliveryInfoText','totalLabel','checkoutBtnText','modalTitle','labelName','labelPhone','labelAddress','labelPayment','labelComment','payBlik','payTerminal','payCash','confirmOrderBtnText','successTitle','successDesc','footerContactsTitle','footerHours','footerPaymentTitle','aboutModalTitle','aboutModalDesc','termsTitle','termHours','termTime','termPrice'].forEach(id => {
+            ['navAbout','cartBtnText','heroBtnMenu','heroBtnInfo','cartTitle','subtotalLabel','deliveryInfoText','totalLabel','checkoutBtnText','modalTitle','labelOrderType','optDelivery','optTable','labelName','labelPhone','labelAddress','labelPayment','labelComment','payBlik','payTerminal','payCash','confirmOrderBtnText','successTitle','successDesc','footerHours','aboutModalTitle','aboutModalDesc','termsTitle','termHours','termTime','termPrice'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el && langObj[id]) el.innerHTML = langObj[id];
             });
 
-            document.getElementById('heroTitle').innerHTML = langObj.heroTitle;
-
             renderCategories();
             renderProducts();
             renderCartItems();
+        }
+
+        function handleOrderTypeChange(value) {
+            const labelAddr = document.getElementById('labelAddress');
+            const inputAddr = document.getElementById('orderAddress');
+            if(value === 'Table') {
+                labelAddr.innerText = currentLang === 'RU' ? 'НОМЕР СТОЛИКА' : (currentLang === 'PL' ? 'NUMER STOLIKA' : 'TABLE NUMBER');
+                inputAddr.placeholder = currentLang === 'RU' ? 'Столик №3' : 'Stolik nr 3';
+            } else {
+                labelAddr.innerText = currentLang === 'RU' ? 'АДРЕС ДОСТАВКИ' : (currentLang === 'PL' ? 'ADRES DOSTAWY' : 'DELIVERY ADDRESS');
+                inputAddr.placeholder = 'Pętkowo 18, Środa Wielkopolska';
+            }
         }
 
         function renderCategories() {
@@ -732,6 +724,7 @@
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
 
+            const orderType = document.getElementById('orderType').value;
             const name = document.getElementById('orderName').value;
             const phone = document.getElementById('orderPhone').value;
             const address = document.getElementById('orderAddress').value;
@@ -742,8 +735,8 @@
             const totalPln = cart.reduce((sum, c) => sum + c.item.pricePln * c.quantity, 0);
 
             const payload = {
-                type: "Доставка",
-                details: `Имя: ${name}\nТел: ${phone}\nАдрес: ${address}\nОплата: ${payment}` + (comment ? `\nКоммент: ${comment}` : ''),
+                type: orderType === 'Table' ? "Заказ у столика" : "Доставка",
+                details: `Имя: ${name}\nТел: ${phone}\n${orderType === 'Table' ? 'Столик' : 'Адрес'}: ${address}\nОплата: ${payment}` + (comment ? `\nКоммент: ${comment}` : ''),
                 items: itemsText,
                 total: `${totalPln} zł`
             };
@@ -770,7 +763,7 @@
         }
 
         function scrollToMenu() {
-            window.scrollTo({ top: 500, behavior: 'smooth' });
+            window.scrollTo({ top: 350, behavior: 'smooth' });
         }
 
         function scrollToTop() {
