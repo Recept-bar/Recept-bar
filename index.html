@@ -1,737 +1,642 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Бар Recept — Меню</title>
-  <style>
-    :root {
-      --bg-color: #121212;
-      --card-bg: #1e1e1e;
-      --accent: #e5a93b;
-      --text-main: #ffffff;
-      --text-muted: #aaaaaa;
-      --border: #2a2a2a;
-      --success: #4caf50;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      padding-bottom: 90px;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      background-color: var(--bg-color);
-      border-bottom: 1px solid var(--border);
-      z-index: 100;
-      padding: 12px 16px;
-    }
-
-    .header-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .brand {
-      font-size: 20px;
-      font-weight: bold;
-      letter-spacing: 1px;
-      color: var(--accent);
-    }
-
-    .lang-switcher select {
-      background: var(--card-bg);
-      color: var(--text-main);
-      border: 1px solid var(--accent);
-      padding: 6px 10px;
-      border-radius: 20px;
-      font-size: 14px;
-      outline: none;
-    }
-
-    .categories {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      white-space: nowrap;
-      padding-bottom: 4px;
-      scrollbar-width: none;
-    }
-
-    .categories::-webkit-scrollbar {
-      display: none;
-    }
-
-    .cat-btn {
-      background: var(--card-bg);
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-size: 13px;
-      cursor: pointer;
-    }
-
-    .cat-btn.active {
-      background: var(--accent);
-      color: #000;
-      font-weight: bold;
-      border-color: var(--accent);
-    }
-
-    .container {
-      padding: 16px;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .section-title {
-      font-size: 18px;
-      color: var(--accent);
-      margin: 20px 0 12px 0;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border-left: 3px solid var(--accent);
-      padding-left: 8px;
-    }
-
-    .menu-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .dish-info {
-      flex: 1;
-    }
-
-    .dish-title {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .dish-desc {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    .dish-price {
-      font-size: 15px;
-      font-weight: bold;
-      color: var(--accent);
-    }
-
-    .add-btn {
-      background: var(--accent);
-      color: #000;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 13px;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    /* Нижняя плашка корзины */
-    .cart-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #1a1a1a;
-      border-top: 1px solid var(--accent);
-      padding: 14px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 200;
-      box-shadow: 0 -4px 12px rgba(0,0,0,0.5);
-      display: none;
-    }
-
-    .cart-bar.visible {
-      display: flex;
-    }
-
-    .cart-info {
-      font-size: 14px;
-    }
-
-    .cart-total {
-      font-weight: bold;
-      color: var(--accent);
-      font-size: 16px;
-    }
-
-    .checkout-btn {
-      background: var(--accent);
-      color: #000;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-weight: bold;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    /* Модальные окна */
-    .modal {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.85);
-      z-index: 300;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      display: none;
-    }
-
-    .modal.open {
-      display: flex;
-    }
-
-    .modal-content {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      width: 100%;
-      max-width: 420px;
-      max-height: 85vh;
-      overflow-y: auto;
-    }
-
-    .modal-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 16px;
-      color: var(--accent);
-      text-align: center;
-    }
-
-    .cart-item-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .cart-item-title {
-      font-size: 14px;
-      font-weight: 500;
-      flex: 1;
-      padding-right: 10px;
-    }
-
-    .qty-controls {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .qty-btn {
-      background: #2a2a2a;
-      color: var(--accent);
-      border: 1px solid var(--border);
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .type-switcher {
-      display: flex;
-      gap: 10px;
-      margin: 16px 0;
-    }
-
-    .type-btn {
-      flex: 1;
-      padding: 10px;
-      background: #2a2a2a;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: bold;
-      text-align: center;
-    }
-
-    .type-btn.active {
-      background: var(--accent);
-      color: #000;
-      border-color: var(--accent);
-    }
-
-    .input-group {
-      margin-bottom: 16px;
-    }
-
-    .input-group label {
-      display: block;
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    .input-group select, .input-group input {
-      width: 100%;
-      background: #121212;
-      border: 1px solid var(--border);
-      color: var(--text-main);
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 14px;
-      outline: none;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .btn-cancel {
-      background: #2a2a2a;
-      color: var(--text-main);
-      border: none;
-      padding: 12px;
-      border-radius: 10px;
-      flex: 1;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .btn-submit {
-      background: var(--accent);
-      color: #000;
-      border: none;
-      padding: 12px;
-      border-radius: 10px;
-      flex: 2;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .success-box {
-      text-align: center;
-      padding: 10px;
-    }
-
-    .success-icon {
-      font-size: 48px;
-      margin-bottom: 12px;
-    }
-
-    .success-title {
-      font-size: 20px;
-      font-weight: bold;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-
-    .success-text {
-      font-size: 14px;
-      color: var(--text-muted);
-      margin-bottom: 20px;
-      line-height: 1.4;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RECEPT BAR — Доставка еды и напитков</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#050B14',
+                            card: '#0D1526',
+                            border: '#1E2D4A',
+                            gold: '#D4AF37',
+                            goldHover: '#E5C158',
+                            accent: '#C5A059'
+                        }
+                    },
+                    fontFamily: {
+                        brand: ['Cinzel', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Inter & Cinzel for Luxury Brand Title -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050B14;
+            color: #F3F4F6;
+        }
+        .font-brand {
+            font-family: 'Cinzel', serif;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-brand-dark min-h-screen flex flex-col selection:bg-brand-gold selection:text-black">
 
-  <header>
-    <div class="header-top">
-      <div class="brand">BAR RECEPT</div>
-      <div class="lang-switcher">
-        <select id="langSelect" onchange="changeLang(this.value)">
-          <option value="ru">🇷🇺 RU</option>
-          <option value="en">🇬🇧 EN</option>
-          <option value="pl">🇵🇱 PL</option>
-        </select>
-      </div>
-    </div>
-    <div class="categories" id="catNav"></div>
-  </header>
-
-  <div class="container" id="menuContainer"></div>
-
-  <!-- Нижняя плашка -->
-  <div class="cart-bar" id="cartBar">
-    <div class="cart-info">
-      <div>Выбрано: <span id="cartCount">0</span> блюд</div>
-      <div class="cart-total" id="cartTotal">0 тг</div>
-    </div>
-    <button class="checkout-btn" onclick="openCartModal()">Корзина</button>
-  </div>
-
-  <!-- Модальное окно Корзины и оформления -->
-  <div class="modal" id="cartModal">
-    <div class="modal-content">
-      <div class="modal-title" id="cartTitleText">Ваш заказ</div>
-      
-      <div id="cartItemsList"></div>
-
-      <div class="type-switcher">
-        <button class="type-btn active" id="typeTableBtn" onclick="setOrderType('table')">🪑 Столик</button>
-        <button class="type-btn" id="typeDeliveryBtn" onclick="setOrderType('delivery')">🚗 Доставка</button>
-      </div>
-
-      <div class="input-group" id="tableInputGroup">
-        <label id="tableLabelText">Номер столика:</label>
-        <select id="tableNumber">
-          <option value="Стол №1">Стол №1</option>
-          <option value="Стол №2">Стол №2</option>
-          <option value="Стол №3">Стол №3</option>
-          <option value="Стол №4">Стол №4</option>
-          <option value="Стол №5">Стол №5</option>
-          <option value="Стол №6">Стол №6</option>
-          <option value="Стол №7">Стол №7</option>
-          <option value="Стол №8">Стол №8</option>
-          <option value="Стол №9">Стол №9</option>
-          <option value="Стол №10">Стол №10</option>
-        </select>
-      </div>
-
-      <div class="input-group" id="deliveryInputGroup" style="display: none;">
-        <label id="phoneLabelText">Контактный телефон:</label>
-        <input type="tel" id="clientPhone" placeholder="+48 ... ... ...">
-      </div>
-
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="closeCartModal()">Закрыть</button>
-        <button class="btn-submit" id="submitBtnText" onclick="sendOrder()">Отправить заказ</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Окно успешного оформления -->
-  <div class="modal" id="successModal">
-    <div class="modal-content">
-      <div class="success-box">
-        <div class="success-icon">✅</div>
-        <div class="success-title">Заказ отправлен!</div>
-        <div class="success-text">Спасибо за заказ! Наш администратор свяжется с вами в ближайшее время.</div>
-        <button class="btn-submit" style="width: 100%;" onclick="closeSuccessModal()">Отлично</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const menuData = [
-      {
-        catId: "cold",
-        catName: { ru: "Холодные закуски и салаты", en: "Cold Appetizers & Salads", pl: "Zimne przekąski i sałatki" },
-        items: [
-          { id: 1, title: { ru: "Тар-тар из семги", en: "Salmon Tartare", pl: "Tatar z łososia" }, desc: "250гр", price: 2400 },
-          { id: 2, title: { ru: "Филе скумбрии с горячим картофелем", en: "Mackerel Fillet with Hot Potatoes", pl: "Filet z makreli z gorącymi ziemniakami" }, desc: "250гр", price: 1700 },
-          { id: 3, title: { ru: "Сырная тарелка", en: "Cheese Platter", pl: "Deska serów" }, desc: "180гр", price: 1900 },
-          { id: 4, title: { ru: "Рыбная нарезка", en: "Fish Platter", pl: "Półmisek rybny" }, desc: "200гр", price: 2700 },
-          { id: 5, title: { ru: "Нарезка по-казахски", en: "Kazakh Style Meat Platter", pl: "Półmisek mięsny po kazachsku" }, desc: "200гр", price: 3900 },
-          { id: 6, title: { ru: "Паштет из говяжей печени", en: "Beef Liver Pate", pl: "Pasztet z wątróbki wołowej" }, desc: "150гр", price: 900 },
-          { id: 7, title: { ru: "Цезарь с курицей", en: "Chicken Caesar Salad", pl: "Sałatka Cezar z kurczakiem" }, desc: "300гр", price: 1800 },
-          { id: 8, title: { ru: "Оливки, маслины", en: "Olives", pl: "Oliwki" }, desc: "150гр", price: 900 },
-          { id: 9, title: { ru: "Фруктовая нарезка", en: "Fruit Platter", pl: "Półmisek owoców" }, desc: "400гр", price: 5500 }
-        ]
-      },
-      {
-        catId: "hot_snack",
-        catName: { ru: "Горячие закуски", en: "Hot Appetizers", pl: "Gorące przekąski" },
-        items: [
-          { id: 10, title: { ru: "Брускетта с говядиной и корнишонами", en: "Bruschetta with Beef & Gherkins", pl: "Bruschetta z wołowiną i korniszonami" }, desc: "180гр", price: 1300 },
-          { id: 11, title: { ru: "Брускетта с риккотой и вялеными помидорами", en: "Bruschetta with Ricotta & Sun-dried Tomatoes", pl: "Bruschetta z ricottą i suszonymi pomidorami" }, desc: "150гр", price: 1100 },
-          { id: 12, title: { ru: "Тарелка пивных креветок", en: "Beer Shrimps Platter", pl: "Krewetki do piwa" }, desc: "180гр", price: 4300 },
-          { id: 13, title: { ru: "Хвосты королевских креветок", en: "King Prawn Tails", pl: "Ogonki krewetek królewskich" }, desc: "180гр", price: 5200 },
-          { id: 14, title: { ru: "Стейк-салат с говядиной", en: "Beef Steak Salad", pl: "Sałatka ze stekiem wołowym" }, desc: "300гр", price: 2200 },
-          { id: 15, title: { ru: "Сет из колбасок", en: "Sausage Set", pl: "Zestaw kiełbasek" }, desc: "400гр", price: 4900 },
-          { id: 16, title: { ru: "Бургер с говядиной", en: "Beef Burger", pl: "Burger z wołowiną" }, desc: "400гр", price: 1700 }
-        ]
-      },
-      {
-        catId: "soups",
-        catName: { ru: "Супы и выпечка", en: "Soups & Bakery", pl: "Zupy i wypieki" },
-        items: [
-          { id: 17, title: { ru: "Мексиканский суп с фасолью и говядиной", en: "Mexican Beef & Bean Soup", pl: "Meksykańska zupa z fasolą i wołowiną" }, desc: "400гр", price: 1900 },
-          { id: 18, title: { ru: "Хлебная корзина", en: "Bread Basket", pl: "Koszyk pieczywa" }, desc: "200гр", price: 2200 }
-        ]
-      },
-      {
-        catId: "mains",
-        catName: { ru: "Горячие блюда", en: "Main Courses", pl: "Dania główne" },
-        items: [
-          { id: 19, title: { ru: "Стейк New York", en: "New York Steak", pl: "Stek New York" }, desc: "200гр", price: 4300 },
-          { id: 20, title: { ru: "Пепер-стейк", en: "Pepper Steak", pl: "Stek pieprzowy" }, desc: "200гр", price: 4200 },
-          { id: 21, title: { ru: "Рулет из куриной грудки с моцареллой и шпинатом", en: "Chicken Breast Roll with Mozzarella & Spinach", pl: "Roladka z piersi kurczaka z mozzarellą i szpinakiem" }, desc: "250гр", price: 2400 },
-          { id: 22, title: { ru: "Бефстроганов с грибами", en: "Beef Stroganoff with Mushrooms", pl: "Boeuf Stroganoff z grzybami" }, desc: "250гр", price: 2200 },
-          { id: 23, title: { ru: "Говяжьи ребра «Терияки»", en: "Teriyaki Beef Ribs", pl: "Żeberka wołowe w sosie teriyaki" }, desc: "400гр", price: 4900 }
-        ]
-      },
-      {
-        catId: "sides",
-        catName: { ru: "Гарниры", en: "Side Dishes", pl: "Dodatki" },
-        items: [
-          { id: 24, title: { ru: "Овощи-гриль с сыром рикотта", en: "Grilled Vegetables with Ricotta", pl: "Warzywa z grilla z serem ricotta" }, desc: "250гр", price: 1300 },
-          { id: 25, title: { ru: "Картофель фри", en: "French Fries", pl: "Frytki" }, desc: "150гр", price: 500 }
-        ]
-      }
-    ];
-
-    let currentLang = 'ru';
-    let cart = {};
-    let orderType = 'table';
-
-    const translations = {
-      ru: { add: "В корзину", order: "Корзина", title: "Ваш заказ", table: "🪑 Столик", delivery: "🚗 Доставка", tableLabel: "Номер столика:", phoneLabel: "Контактный телефон:", cancel: "Закрыть", send: "Отправить заказ" },
-      en: { add: "Add", order: "Cart", title: "Your Order", table: "🪑 Table", delivery: "🚗 Delivery", tableLabel: "Table number:", phoneLabel: "Contact phone:", cancel: "Close", send: "Send Order" },
-      pl: { add: "Dodaj", order: "Koszyk", title: "Twoje zamówienie", table: "🪑 Stolik", delivery: "🚗 Dostawa", tableLabel: "Numer stolika:", phoneLabel: "Telefon kontaktowy:", cancel: "Zamknij", send: "Wyślij zamówienie" }
-    };
-
-    function renderNav() {
-      const nav = document.getElementById('catNav');
-      nav.innerHTML = menuData.map((cat, idx) => `
-        <button class="cat-btn ${idx === 0 ? 'active' : ''}" onclick="scrollToCat('${cat.catId}', this)">
-          ${cat.catName[currentLang]}
-        </button>
-      `).join('');
-    }
-
-    function renderMenu() {
-      const container = document.getElementById('menuContainer');
-      const t = translations[currentLang];
-      
-      container.innerHTML = menuData.map(cat => `
-        <div id="${cat.catId}">
-          <h2 class="section-title">${cat.catName[currentLang]}</h2>
-          ${cat.items.map(item => `
-            <div class="menu-card">
-              <div class="dish-info">
-                <div class="dish-title">${item.title[currentLang]}</div>
-                <div class="dish-desc">${item.desc}</div>
-                <div class="dish-price">${Number(item.price).toLocaleString()} тг</div>
-              </div>
-              <button class="add-btn" onclick="addToCart(${item.id})">${t.add}${cart[item.id] ? '('+cart[item.id]+')' : ''}</button>
+    <!-- Header / Navigation -->
+    <header class="sticky top-0 z-40 bg-brand-dark/90 backdrop-blur-md border-b border-brand-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo & Brand Name -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="scrollToTop()">
+                <div class="w-11 h-11 relative flex items-center justify-center bg-brand-dark rounded-xl shadow-lg overflow-hidden border border-brand-gold/40">
+                    <img src="logo.jpg" alt="RECEPT BAR Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="hidden w-full h-full items-center justify-center bg-brand-dark">
+                        <svg viewBox="0 0 100 100" class="w-8 h-8 fill-brand-gold">
+                            <polygon points="10,15 90,15 50,90" fill="#050B14" stroke="#D4AF37" stroke-width="4"/>
+                            <polygon points="18,20 82,20 50,82" fill="#D4AF37"/>
+                            <text x="50" y="66" font-size="50" font-weight="bold" font-family="serif" text-anchor="middle" fill="#050B14">R</text>
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <span class="text-xl font-extrabold tracking-wider text-white block leading-tight font-brand">RECEPT BAR</span>
+                    <span class="text-[9px] tracking-[0.2em] text-brand-gold uppercase block font-semibold">Cocktails & Kitchen</span>
+                </div>
             </div>
-          `).join('')}
+
+            <!-- Middle Navigation: About Us & Instagram -->
+            <div class="hidden lg:flex items-center space-x-6 text-sm font-medium">
+                <button onclick="openAboutModal()" class="text-gray-300 hover:text-brand-gold transition-colors flex items-center space-x-2">
+                    <i class="fa-solid fa-circle-info text-brand-gold"></i>
+                    <span>О нас</span>
+                </button>
+                <a href="https://instagram.com/" target="_blank" class="text-gray-300 hover:text-brand-gold transition-colors flex items-center space-x-2">
+                    <i class="fa-brands fa-instagram text-brand-gold text-base"></i>
+                    <span>Instagram</span>
+                </a>
+            </div>
+
+            <!-- Actions: Language, About Mobile & Cart -->
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <!-- About Button (Mobile) -->
+                <button onclick="openAboutModal()" class="lg:hidden text-gray-300 hover:text-brand-gold p-2 rounded-lg bg-brand-card border border-brand-border">
+                    <i class="fa-solid fa-circle-info text-brand-gold"></i>
+                </button>
+
+                <!-- Language Selector -->
+                <div class="relative">
+                    <button onclick="toggleLangDropdown()" class="flex items-center space-x-2 bg-brand-card border border-brand-border px-3 py-2 rounded-full text-sm font-medium hover:border-brand-gold transition-colors">
+                        <span id="currentLangFlag">🇵🇱</span>
+                        <span id="currentLangText" class="text-white">PL</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i>
+                    </button>
+                    <div id="langDropdown" class="hidden absolute right-0 mt-2 w-32 bg-brand-card border border-brand-border rounded-xl shadow-2xl py-1 z-50">
+                        <button onclick="setLanguage('PL')" class="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-brand-border/50 hover:text-white flex items-center space-x-2">
+                            <span>🇵🇱</span> <span>Polski</span>
+                        </button>
+                        <button onclick="setLanguage('RU')" class="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-brand-border/50 hover:text-white flex items-center space-x-2">
+                            <span>🇷🇺</span> <span>Русский</span>
+                        </button>
+                        <button onclick="setLanguage('EN')" class="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-brand-border/50 hover:text-white flex items-center space-x-2">
+                            <span>🇬🇧</span> <span>English</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cart Button -->
+                <button onclick="toggleCartDrawer(true)" class="relative bg-brand-gold hover:bg-brand-goldHover text-brand-dark px-4 py-2.5 rounded-full font-semibold flex items-center space-x-2 shadow-lg transition-transform active:scale-95">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="hidden sm:inline" id="cartBtnText">Корзина</span>
+                    <span id="cartBadge" class="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-brand-dark transition-transform scale-0">0</span>
+                </button>
+            </div>
         </div>
-      `).join('');
-    }
+    </header>
 
-    function addToCart(id) {
-      cart[id] = (cart[id] || 0) + 1;
-      updateCartBar();
-      renderMenu();
-    }
-
-    function changeQty(id, delta) {
-      if (cart[id]) {
-        cart[id] += delta;
-        if (cart[id] <= 0) delete cart[id];
-      }
-      updateCartBar();
-      renderCartItems();
-      renderMenu();
-      if (Object.keys(cart).length === 0) {
-        closeCartModal();
-      }
-    }
-
-    function updateCartBar() {
-      const cartBar = document.getElementById('cartBar');
-      const cartCount = document.getElementById('cartCount');
-      const cartTotal = document.getElementById('cartTotal');
-      
-      let totalCount = 0;
-      let totalPrice = 0;
-
-      for (let id in cart) {
-        let count = cart[id];
-        totalCount += count;
-        let item = findItemById(id);
-        if (item) totalPrice += item.price * count;
-      }
-
-      if (totalCount > 0) {
-        cartBar.classList.add('visible');
-        cartCount.innerText = totalCount;
-        cartTotal.innerText = totalPrice.toLocaleString() + " тг";
-      } else {
-        cartBar.classList.remove('visible');
-      }
-    }
-
-    function renderCartItems() {
-      const container = document.getElementById('cartItemsList');
-      let html = '';
-      let totalPrice = 0;
-
-      for (let id in cart) {
-        let item = findItemById(id);
-        let count = cart[id];
-        if (item) {
-          let cost = item.price * count;
-          totalPrice += cost;
-          html += `
-            <div class="cart-item-row">
-              <div class="cart-item-title">${item.title[currentLang]}</div>
-              <div class="qty-controls">
-                <button class="qty-btn" onclick="changeQty(${id}, -1)">-</button>
-                <span>${count}</span>
-                <button class="qty-btn" onclick="changeQty(${id}, 1)">+</button>
-              </div>
-              <div style="margin-left:12px; font-weight:bold; color:var(--accent);">${cost.toLocaleString()} тг</div>
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden py-10 md:py-16 border-b border-brand-border bg-gradient-to-b from-brand-card/40 to-brand-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+                <div class="inline-flex items-center space-x-2 bg-brand-gold/10 border border-brand-gold/30 px-3.5 py-1.5 rounded-full text-brand-gold text-xs font-semibold mb-6">
+                    <i class="fa-solid fa-star text-xs"></i>
+                    <span id="heroBadgeText">Премиальное меню бара</span>
+                </div>
+                <h1 id="heroTitle" class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-6 font-brand">
+                    RECEPT BAR <br><span class="text-brand-gold">Заказ у столика</span>
+                </h1>
+                <p id="heroDesc" class="text-gray-400 text-base sm:text-lg mb-8 max-w-lg leading-relaxed">
+                    Откройте для себя авторские коктейли, изысканные закуски и атмосферу нашего бара. Выберите блюда и оформите заказ прямо со смартфона.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="scrollToMenu()" class="bg-brand-gold hover:bg-brand-goldHover text-brand-dark px-8 py-3.5 rounded-xl font-bold shadow-lg transition-all transform hover:-translate-y-0.5">
+                        <span id="heroBtnMenu">Перейти к меню</span>
+                    </button>
+                    <button onclick="openAboutModal()" class="bg-brand-card hover:bg-brand-border text-white border border-brand-border px-6 py-3.5 rounded-xl font-medium transition-colors">
+                        <span id="heroBtnInfo">Контакты и адрес</span>
+                    </button>
+                </div>
             </div>
-          `;
+            <div class="relative flex justify-center">
+                <div class="w-full max-w-md bg-gradient-to-br from-brand-card to-brand-border p-2 rounded-3xl border border-brand-gold/20 shadow-2xl relative overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=800&q=80" alt="Cocktail & Atmosphere" class="w-full h-72 sm:h-80 object-cover rounded-2xl group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/90 via-transparent to-transparent rounded-2xl flex flex-col justify-end p-6">
+                        <span class="text-brand-gold text-xs font-bold uppercase tracking-wider mb-1">Атмосфера</span>
+                        <h3 class="text-white text-xl font-bold font-brand">RECEPT BAR</h3>
+                        <p class="text-gray-300 text-sm mt-1">Лучшие напитки и закуски в городе</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Navigation -->
+    <nav class="sticky top-20 z-30 bg-brand-dark/95 backdrop-blur-md border-b border-brand-border py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="categoryContainer" class="flex items-center space-x-3 overflow-x-auto no-scrollbar py-1"></div>
+        </div>
+    </nav>
+
+    <!-- Main Menu Content Section -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center space-x-3">
+                <div class="w-1.5 h-8 bg-brand-gold rounded-full"></div>
+                <h2 id="activeCategoryTitle" class="text-2xl sm:text-3xl font-extrabold text-white tracking-wide font-brand">Закуски</h2>
+            </div>
+            <span id="itemCountLabel" class="text-sm text-gray-400 font-medium">0 позиций</span>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+        <!-- Empty search state -->
+        <div id="emptySearch" class="hidden text-center py-20">
+            <div class="w-16 h-16 bg-brand-card border border-brand-border rounded-full flex items-center justify-center mx-auto mb-4 text-brand-gold text-xl">
+                <i class="fa-solid fa-search"></i>
+            </div>
+            <h3 class="text-white text-lg font-bold mb-2">Ничего не найдено</h3>
+            <p class="text-gray-400 text-sm">Попробуйте изменить поиск или выбрать другую категорию.</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-brand-card border-t border-brand-border mt-20 text-gray-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="text-white font-bold text-xl tracking-wider font-brand">RECEPT BAR</span>
+                </div>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                    Авторская кухня, изысканные коктейли и атмосфера для приятного отдыха.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4 text-base font-brand">Контакты</h4>
+                <p class="mb-2"><i class="fa-solid fa-location-dot text-brand-gold mr-2"></i> Pętkowo 18, Środa Wielkopolska</p>
+                <p class="mb-2"><i class="fa-solid fa-phone text-brand-gold mr-2"></i> +48 123 456 789</p>
+                <p><i class="fa-brands fa-instagram text-brand-gold mr-2"></i> @recept.bar</p>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4 text-base font-brand">Время работы</h4>
+                <p class="mb-2"><i class="fa-solid fa-clock text-brand-gold mr-2"></i> Вт - Чт: 16:00 - 00:00</p>
+                <p class="mb-2"><i class="fa-solid fa-clock text-brand-gold mr-2"></i> Пт - Сб: 16:00 - 02:00</p>
+                <p class="text-xs text-gray-500 mt-4">© 2026 RECEPT BAR. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Slide-over Cart Drawer -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity" onclick="toggleCartDrawer(false)"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-brand-card border-l border-brand-border flex flex-col shadow-2xl">
+                <div class="px-6 py-5 border-b border-brand-border flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-bag-shopping text-brand-gold text-xl"></i>
+                        <h3 class="text-white font-bold text-lg font-brand" id="cartTitle">Ваш заказ</h3>
+                    </div>
+                    <button onclick="toggleCartDrawer(false)" class="text-gray-400 hover:text-white p-2 rounded-lg hover:bg-brand-border transition-colors">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-6 space-y-4 divide-y divide-brand-border/50"></div>
+
+                <div id="cartFooter" class="border-t border-brand-border p-6 bg-brand-dark/50">
+                    <div class="space-y-2 mb-6">
+                        <div class="flex justify-between text-lg font-bold text-white pt-2 border-t border-brand-border">
+                            <span id="totalLabel">Итого</span>
+                            <span id="cartTotal" class="text-brand-gold">0 zł</span>
+                        </div>
+                    </div>
+                    <button onclick="openCheckoutModal()" id="checkoutBtn" class="w-full bg-brand-gold hover:bg-brand-goldHover text-brand-dark py-4 rounded-xl font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span id="checkoutBtnText">Отправить заказ</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Us Modal -->
+    <div id="aboutModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeAboutModal()"></div>
+        <div class="relative bg-brand-card border border-brand-border rounded-2xl w-full max-w-lg p-6 sm:p-8 shadow-2xl z-10">
+            <div class="flex items-center justify-between mb-6 border-b border-brand-border pb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-brand-gold/10 rounded-xl border border-brand-gold/30 flex items-center justify-center text-brand-gold">
+                        <i class="fa-solid fa-glass-cheers text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white font-brand">О баре RECEPT</h3>
+                        <p class="text-xs text-brand-gold">Cocktails & Kitchen</p>
+                    </div>
+                </div>
+                <button onclick="closeAboutModal()" class="text-gray-400 hover:text-white p-2">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4 text-sm text-gray-300 leading-relaxed mb-6">
+                <p>Добро пожаловать в <strong>RECEPT BAR</strong> — место авторских коктейлей, уютной атмосферы и отличных блюд.</p>
+                
+                <div class="bg-brand-dark p-4 rounded-xl border border-brand-border space-y-3">
+                    <div class="flex items-start space-x-3">
+                        <i class="fa-solid fa-location-dot text-brand-gold mt-1"></i>
+                        <div>
+                            <strong class="text-white block">Адрес:</strong>
+                            <span class="text-gray-400">Pętkowo 18, Środa Wielkopolska</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <i class="fa-solid fa-phone text-brand-gold mt-1"></i>
+                        <div>
+                            <strong class="text-white block">Телефон:</strong>
+                            <a href="tel:+48123456789" class="text-brand-gold hover:underline">+48 123 456 789</a>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <i class="fa-brands fa-instagram text-brand-gold mt-1"></i>
+                        <div>
+                            <strong class="text-white block">Instagram:</strong>
+                            <a href="https://instagram.com/" target="_blank" class="text-brand-gold hover:underline">@recept.bar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <a href="https://instagram.com/" target="_blank" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 transition-opacity">
+                    <i class="fa-brands fa-instagram text-lg"></i>
+                    <span>Instagram</span>
+                </a>
+                <button onclick="closeAboutModal()" class="bg-brand-border hover:bg-brand-border/80 text-white py-3 rounded-xl font-semibold transition-colors">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeCheckoutModal()"></div>
+        <div class="relative bg-brand-card border border-brand-border rounded-2xl w-full max-w-lg p-6 sm:p-8 shadow-2xl z-10 overflow-y-auto max-h-[90vh]">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-white flex items-center space-x-2 font-brand">
+                    <i class="fa-solid fa-paper-plane text-brand-gold"></i>
+                    <span id="modalTitle">Детали заказа</span>
+                </h3>
+                <button onclick="closeCheckoutModal()" class="text-gray-400 hover:text-white p-2">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form id="checkoutForm" onsubmit="submitOrder(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelOrderType">Тип заказа</label>
+                    <select id="orderType" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+                        <option value="Заказ у столика">Заказ у столика (в баре)</option>
+                        <option value="Самовывоз">Самовывоз</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelDetails">Номер столика / Ваше имя</label>
+                    <input type="text" required id="orderDetails" placeholder="Столик №3 или имя" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelComment">Пожелания или комментарий</label>
+                    <input type="text" id="orderComment" placeholder="Без льда, острый соус и т.д." class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+                </div>
+                <div class="pt-4">
+                    <button type="submit" id="submitBtn" class="w-full bg-brand-gold hover:bg-brand-goldHover text-brand-dark py-4 rounded-xl font-bold shadow-lg transition-transform active:scale-95">
+                        <span id="confirmOrderBtnText">Отправить бармену</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Order Toast -->
+    <div id="successModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+        <div class="relative bg-brand-card border border-brand-gold/40 rounded-2xl w-full max-w-md p-8 text-center shadow-2xl z-10">
+            <div class="w-20 h-20 bg-brand-gold/20 border border-brand-gold rounded-full flex items-center justify-center mx-auto mb-6 text-brand-gold text-3xl animate-bounce">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-2 font-brand">Заказ отправлен!</h3>
+            <p class="text-gray-300 text-sm mb-6">Бармен уже получил ваш заказ и приступил к его приготовлению.</p>
+            <button onclick="closeSuccessModal()" class="w-full bg-brand-gold hover:bg-brand-goldHover text-brand-dark py-3.5 rounded-xl font-bold shadow-lg">
+                Отлично
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        const MAKE_WEBHOOK_URL = 'https://hook.eu1.make.com/a4y423l0oepxwr294l9t1y1106a74y2k'; // Ваш настроенный Webhook
+
+        const menuData = {
+            pl: {
+                categories: [
+                    { id: 'cocktails', name: 'Krajowe i Przekąski', icon: 'fa-martini-glass-citrus' },
+                    { id: 'cold', name: 'Zimne Przekąski', icon: 'fa-snowflake' },
+                    { id: 'hot', name: 'Dania Gorące', icon: 'fa-fire-flame-curved' },
+                    { id: 'drinks', name: 'Napoje', icon: 'fa-wine-glass' }
+                ],
+                items: [
+                    { id: 1, cat: 'cold', name: 'Tartar z Łososia', weight: '250g', price: 38, image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80', desc: 'Świeży łosoś, kapary, szalotka, sos firmowy.' },
+                    { id: 2, cat: 'cold', name: 'Deska Serów', weight: '200g', price: 32, image: 'https://images.unsplash.com/photo-1631379578550-7038263db699?auto=format&fit=crop&w=600&q=80', desc: 'Wyborne sery z miodem i orzechami.' },
+                    { id: 3, cat: 'cocktails', name: 'Aperol Spritz', weight: '250ml', price: 28, image: 'https://images.unsplash.com/photo-1560512823-829485b8bf24?auto=format&fit=crop&w=600&q=80', desc: 'Aperol, Prosecco, woda gazowana, pomarańcza.' },
+                    { id: 4, cat: 'drinks', name: 'Piwo Lane RECEPT', weight: '500ml', price: 16, image: 'https://images.unsplash.com/photo-1608270120063-2f085b1c555f?auto=format&fit=crop&w=600&q=80', desc: 'Świeże piwo rzemieślnicze.' }
+                ]
+            },
+            ru: {
+                categories: [
+                    { id: 'cocktails', name: 'Коктейли', icon: 'fa-martini-glass-citrus' },
+                    { id: 'cold', name: 'Холодные закуски', icon: 'fa-snowflake' },
+                    { id: 'hot', name: 'Горячие блюда', icon: 'fa-fire-flame-curved' },
+                    { id: 'drinks', name: 'Напитки', icon: 'fa-wine-glass' }
+                ],
+                items: [
+                    { id: 1, cat: 'cold', name: 'Тар-тар из семги', weight: '250гр', price: 38, image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80', desc: 'Свежайшее филе семги с каперсами и фирменной заправкой.' },
+                    { id: 2, cat: 'cold', name: 'Сырная тарелка', weight: '200гр', price: 32, image: 'https://images.unsplash.com/photo-1631379578550-7038263db699?auto=format&fit=crop&w=600&q=80', desc: 'Ассорти элитных сыров с медом и орехами.' },
+                    { id: 3, cat: 'cocktails', name: 'Апероль Шприц', weight: '250мл', price: 28, image: 'https://images.unsplash.com/photo-1560512823-829485b8bf24?auto=format&fit=crop&w=600&q=80', desc: 'Апероль, просекко, газированная вода, апельсин.' },
+                    { id: 4, cat: 'drinks', name: 'Фирменное пиво RECEPT', weight: '500мл', price: 16, image: 'https://images.unsplash.com/photo-1608270120063-2f085b1c555f?auto=format&fit=crop&w=600&q=80', desc: 'Свежее крафтовое пиво.' }
+                ]
+            },
+            en: {
+                categories: [
+                    { id: 'cocktails', name: 'Cocktails', icon: 'fa-martini-glass-citrus' },
+                    { id: 'cold', name: 'Cold Appetizers', icon: 'fa-snowflake' },
+                    { id: 'hot', name: 'Hot Dishes', icon: 'fa-fire-flame-curved' },
+                    { id: 'drinks', name: 'Drinks', icon: 'fa-wine-glass' }
+                ],
+                items: [
+                    { id: 1, cat: 'cold', name: 'Salmon Tartare', weight: '250g', price: 38, image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80', desc: 'Fresh salmon fillet with capers and signature dressing.' },
+                    { id: 2, cat: 'cold', name: 'Cheese Platter', weight: '200g', price: 32, image: 'https://images.unsplash.com/photo-1631379578550-7038263db699?auto=format&fit=crop&w=600&q=80', desc: 'Assorted fine cheeses with honey and nuts.' },
+                    { id: 3, cat: 'cocktails', name: 'Aperol Spritz', weight: '250ml', price: 28, image: 'https://images.unsplash.com/photo-1560512823-829485b8bf24?auto=format&fit=crop&w=600&q=80', desc: 'Aperol, prosecco, soda water, fresh orange.' },
+                    { id: 4, cat: 'drinks', name: 'RECEPT Draft Beer', weight: '500ml', price: 16, image: 'https://images.unsplash.com/photo-1608270120063-2f085b1c555f?auto=format&fit=crop&w=600&q=80', desc: 'Fresh signature craft beer.' }
+                ]
+            }
+        };
+
+        let currentLang = 'PL';
+        let activeCategory = 'cocktails';
+        let cart = [];
+
+        window.onload = function() {
+            renderCategories();
+            renderProducts();
+            updateCartUI();
+        };
+
+        function toggleLangDropdown() {
+            document.getElementById('langDropdown').classList.toggle('hidden');
         }
-      }
 
-      html += `<div style="text-align:right; font-weight:bold; font-size:16px; margin-top:12px; color:var(--accent);">Итого: ${totalPrice.toLocaleString()} тг</div>`;
-      container.innerHTML = html;
-    }
+        function setLanguage(lang) {
+            currentLang = lang;
+            const flags = { 'PL': '🇵🇱', 'RU': '🇷🇺', 'EN': '🇬🇧' };
+            document.getElementById('currentLangFlag').innerText = flags[lang];
+            document.getElementById('currentLangText').innerText = lang;
+            document.getElementById('langDropdown').classList.add('hidden');
 
-    function findItemById(id) {
-      for (let cat of menuData) {
-        for (let item of cat.items) {
-          if (item.id == id) return item;
+            renderCategories();
+            renderProducts();
+            renderCartItems();
         }
-      }
-      return null;
-    }
 
-    function changeLang(lang) {
-      currentLang = lang;
-      renderNav();
-      renderMenu();
-      updateTexts();
-    }
-
-    function updateTexts() {
-      const t = translations[currentLang];
-      document.getElementById('cartTitleText').innerText = t.title;
-      document.getElementById('typeTableBtn').innerText = t.table;
-      document.getElementById('typeDeliveryBtn').innerText = t.delivery;
-      document.getElementById('tableLabelText').innerText = t.tableLabel;
-      document.getElementById('phoneLabelText').innerText = t.phoneLabel;
-      document.querySelector('.btn-cancel').innerText = t.cancel;
-      document.getElementById('submitBtnText').innerText = t.send;
-      document.querySelector('.checkout-btn').innerText = t.order;
-    }
-
-    function scrollToCat(id, btn) {
-      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const el = document.getElementById(id);
-      if (el) {
-        const offset = 120;
-        const bodyRect = document.body.getBoundingClientRect().top;
-        const elementRect = el.getBoundingClientRect().top;
-        const elementPosition = elementRect - bodyRect;
-        const offsetPosition = elementPosition - offset;
-        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-      }
-    }
-
-    function openCartModal() {
-      renderCartItems();
-      document.getElementById('cartModal').classList.add('open');
-    }
-
-    function closeCartModal() {
-      document.getElementById('cartModal').classList.remove('open');
-    }
-
-    function closeSuccessModal() {
-      document.getElementById('successModal').classList.remove('open');
-    }
-
-    function setOrderType(type) {
-      orderType = type;
-      if (type === 'table') {
-        document.getElementById('typeTableBtn').classList.add('active');
-        document.getElementById('typeDeliveryBtn').classList.remove('active');
-        document.getElementById('tableInputGroup').style.display = 'block';
-        document.getElementById('deliveryInputGroup').style.display = 'none';
-      } else {
-        document.getElementById('typeDeliveryBtn').classList.add('active');
-        document.getElementById('typeTableBtn').classList.remove('active');
-        document.getElementById('tableInputGroup').style.display = 'none';
-        document.getElementById('deliveryInputGroup').style.display = 'block';
-      }
-    }
-
-    async function sendOrder() {
-      let orderDetails = {
-        type: orderType === 'table' ? 'В заведении' : 'Доставка',
-        details: orderType === 'table' ? document.getElementById('tableNumber').value : document.getElementById('clientPhone').value.trim(),
-        items: [],
-        total: 0
-      };
-
-      if (orderType === 'delivery' && !orderDetails.details) {
-        alert("Пожалуйста, укажите контактный телефон!");
-        return;
-      }
-
-      for (let id in cart) {
-        let item = findItemById(id);
-        let count = cart[id];
-        if (item) {
-          let cost = item.price * count;
-          orderDetails.total += cost;
-          orderDetails.items.push(`${item.title['ru']} x${count} (${cost.toLocaleString()} тг)`);
+        function renderCategories() {
+            const container = document.getElementById('categoryContainer');
+            const data = menuData[currentLang.toLowerCase()];
+            
+            container.innerHTML = data.categories.map(cat => {
+                const isActive = cat.id === activeCategory;
+                return `
+                    <button onclick="selectCategory('${cat.id}')" class="flex items-center space-x-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all whitespace-nowrap ${isActive ? 'bg-brand-gold text-brand-dark shadow-lg scale-105' : 'bg-brand-card border border-brand-border text-gray-300 hover:border-brand-gold hover:text-white'}">
+                        <i class="fa-solid ${cat.icon}"></i>
+                        <span>${cat.name}</span>
+                    </button>
+                `;
+            }).join('');
         }
-      }
 
-      const makeUrl = "https://hook.eu1.make.com/2r9pbl9g4j7e613zmsmhahbnh89ndkfb";
+        function selectCategory(catId) {
+            activeCategory = catId;
+            renderCategories();
+            renderProducts();
+        }
 
-      try {
-        await fetch(makeUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(orderDetails)
-        });
-      } catch (e) {
-        console.log("Ошибка вебхука", e);
-      }
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const titleElem = document.getElementById('activeCategoryTitle');
+            const countElem = document.getElementById('itemCountLabel');
+            const data = menuData[currentLang.toLowerCase()];
 
-      cart = {};
-      updateCartBar();
-      closeCartModal();
-      renderMenu();
+            const filtered = data.items.filter(item => item.cat === activeCategory);
+            const activeCatObj = data.categories.find(c => c.id === activeCategory);
+            
+            titleElem.innerText = activeCatObj ? activeCatObj.name : '';
+            countElem.innerText = `${filtered.length} poz.`;
 
-      document.getElementById('successModal').classList.add('open');
-    }
+            grid.innerHTML = filtered.map(item => `
+                <div class="bg-brand-card border border-brand-border rounded-2xl overflow-hidden shadow-xl hover:border-brand-gold/50 transition-all duration-300 flex flex-col group">
+                    <div class="relative h-48 overflow-hidden bg-brand-dark">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-3 right-3 bg-brand-dark/80 backdrop-blur-md border border-brand-border px-3 py-1 rounded-full text-xs font-semibold text-brand-gold">
+                            ${item.weight}
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-white font-bold text-lg mb-2 font-brand group-hover:text-brand-gold transition-colors">${item.name}</h3>
+                            <p class="text-gray-400 text-xs leading-relaxed mb-4">${item.desc}</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-brand-border/60">
+                            <div>
+                                <span class="text-lg font-extrabold text-brand-gold">${item.price} zł</span>
+                            </div>
+                            <button onclick="addToCart(${item.id})" class="bg-brand-gold hover:bg-brand-goldHover text-brand-dark px-4 py-2.5 rounded-xl font-bold text-sm shadow-md transition-transform active:scale-95 flex items-center space-x-2">
+                                <i class="fa-solid fa-plus text-xs"></i>
+                                <span>Добавить</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
 
-    renderNav();
-    renderMenu();
-  </script>
+        function addToCart(itemId) {
+            const data = menuData[currentLang.toLowerCase()];
+            const item = data.items.find(i => i.id === itemId);
+            if(!item) return;
+
+            const existing = cart.find(c => c.id === itemId);
+            if(existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...item, quantity: 1 });
+            }
+
+            updateCartUI();
+        }
+
+        function updateQuantity(itemId, delta) {
+            const item = cart.find(c => c.id === itemId);
+            if(!item) return;
+            item.quantity += delta;
+            if(item.quantity <= 0) {
+                cart = cart.filter(c => c.id !== itemId);
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cartBadge');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            if(totalItems > 0) {
+                badge.innerText = totalItems;
+                badge.classList.remove('scale-0');
+            } else {
+                badge.classList.add('scale-0');
+            }
+
+            renderCartItems();
+        }
+
+        function renderCartItems() {
+            const container = document.getElementById('cartItemsContainer');
+            const totalElem = document.getElementById('cartTotal');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+
+            if(cart.length === 0) {
+                container.innerHTML = `<p class="text-gray-400 text-center py-10">Корзина пуста</p>`;
+                totalElem.innerText = '0 zł';
+                checkoutBtn.disabled = true;
+                return;
+            }
+
+            checkoutBtn.disabled = false;
+            let subtotal = 0;
+
+            container.innerHTML = cart.map(item => {
+                subtotal += item.price * item.quantity;
+                return `
+                    <div class="py-4 flex items-center justify-between">
+                        <div>
+                            <h4 class="text-white font-semibold text-sm font-brand">${item.name}</h4>
+                            <span class="text-brand-gold text-xs font-bold">${item.price} zł</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="flex items-center bg-brand-dark border border-brand-border rounded-lg overflow-hidden">
+                                <button onclick="updateQuantity(${item.id}, -1)" class="px-2.5 py-1 text-gray-400 hover:text-white">-</button>
+                                <span class="px-2 text-xs font-bold text-white">${item.quantity}</span>
+                                <button onclick="updateQuantity(${item.id}, 1)" class="px-2.5 py-1 text-gray-400 hover:text-white">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            totalElem.innerText = `${subtotal} zł`;
+        }
+
+        function toggleCartDrawer(open) {
+            document.getElementById('cartDrawer').classList.toggle('hidden', !open);
+        }
+
+        function openCheckoutModal() {
+            toggleCartDrawer(false);
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+        }
+
+        function openAboutModal() {
+            document.getElementById('aboutModal').classList.remove('hidden');
+        }
+
+        function closeAboutModal() {
+            document.getElementById('aboutModal').classList.add('hidden');
+        }
+
+        async function submitOrder(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+
+            const type = document.getElementById('orderType').value;
+            const details = document.getElementById('orderDetails').value;
+            const comment = document.getElementById('orderComment').value;
+
+            const orderItems = cart.map(i => `${i.name} x${i.quantity} (${i.price * i.quantity} zł)`).join('\n');
+            const totalSum = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
+            const payload = {
+                type: type,
+                details: details + (comment ? ` (${comment})` : ''),
+                items: orderItems,
+                total: `${totalSum} zł`
+            };
+
+            try {
+                await fetch(MAKE_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+            } catch(err) {
+                console.error("Ошибка сети:", err);
+            }
+
+            closeCheckoutModal();
+            document.getElementById('successModal').classList.remove('hidden');
+            cart = [];
+            updateCartUI();
+            submitBtn.disabled = false;
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
+        }
+
+        function scrollToMenu() {
+            window.scrollTo({ top: 500, behavior: 'smooth' });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
