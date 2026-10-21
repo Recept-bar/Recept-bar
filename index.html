@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RECEPT BAR — Delivery & Drinks</title>
+    <title>RECEPT BAR — Menu & Delivery</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -46,10 +46,10 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <!-- Logo & Brand Name -->
             <div class="flex items-center space-x-3 cursor-pointer" onclick="scrollToTop()">
-                <div class="w-12 h-12 relative flex items-center justify-center bg-brand-dark rounded-xl shadow-lg overflow-hidden border border-brand-gold/40">
-                    <img src="logo.jpg" alt="RECEPT BAR Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="hidden w-full h-full items-center justify-center bg-[#050B14]">
-                        <svg viewBox="0 0 100 100" class="w-10 h-10">
+                <div class="w-12 h-12 relative flex items-center justify-center bg-transparent overflow-hidden">
+                    <img src="logo.jpg" alt="RECEPT BAR Logo" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="hidden w-full h-full items-center justify-center bg-[#050B14] rounded-lg border border-brand-gold/40">
+                        <svg viewBox="0 0 100 100" class="w-8 h-8">
                             <polygon points="10,15 90,15 50,90" fill="none" stroke="#FFFFFF" stroke-width="6"/>
                             <path d="M 35 25 L 60 25 C 72 25, 72 45, 60 45 L 35 45 Z" fill="none" stroke="#FFFFFF" stroke-width="5"/>
                             <path d="M 35 25 L 35 70" stroke="#FFFFFF" stroke-width="5"/>
@@ -141,7 +141,7 @@
                     <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/90 via-transparent to-transparent rounded-2xl flex flex-col justify-end p-6">
                         <span class="text-brand-gold text-xs font-bold uppercase tracking-wider mb-1" id="heroHitLabel">Хит продаж</span>
                         <h3 class="text-white text-xl font-bold" id="heroHitName">Тар-тар из семги</h3>
-                        <p class="text-gray-300 text-sm mt-1">250гр • 2 400 тг / 38 zł</p>
+                        <p class="text-gray-300 text-sm mt-1">250гр • 24 zł</p>
                     </div>
                 </div>
             </div>
@@ -173,11 +173,8 @@
     <footer class="bg-brand-card border-t border-brand-border mt-20 text-gray-400 text-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-                <span class="text-white font-bold text-xl tracking-wider font-brand block mb-2">RECEPT BAR</span>
-                <p class="text-brand-gold italic font-brand text-xs mb-3">Recept for your happiness</p>
-                <p class="text-xs text-gray-400 leading-relaxed" id="footerAboutText">
-                    Авторская кухня, изысканные напитки и первоклассный сервис доставки прямо к вашему столу.
-                </p>
+                <span class="text-white font-bold text-xl tracking-wider font-brand block mb-1">RECEPT BAR</span>
+                <p class="text-brand-gold italic font-brand text-xs">RECEPT FOR YOUR HAPPINESS</p>
             </div>
             <div>
                 <h4 class="text-white font-semibold mb-4 text-base" id="footerContactsTitle">Контакты и время</h4>
@@ -191,7 +188,7 @@
                 <div class="flex space-x-3 text-2xl text-gray-300">
                     <i class="fa-solid fa-credit-card" title="Банковская карта"></i>
                     <i class="fa-solid fa-money-bill-wave" title="Наличные курьеру"></i>
-                    <i class="fa-solid fa-mobile-screen-button" title="Онлайн QR / Терминал"></i>
+                    <i class="fa-solid fa-mobile-screen-button" title="BLIK / Терминал"></i>
                 </div>
                 <p class="text-xs text-gray-500 mt-4">© 2026 RECEPT BAR. All rights reserved.</p>
             </div>
@@ -216,18 +213,17 @@
                 <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-6 space-y-4 divide-y divide-brand-border/50"></div>
 
                 <div id="cartFooter" class="border-t border-brand-border p-6 bg-brand-dark/50">
-                    <div class="space-y-2 mb-6">
+                    <div class="space-y-2 mb-4">
                         <div class="flex justify-between text-sm text-gray-400">
                             <span id="subtotalLabel">Сумма заказа</span>
-                            <span id="cartSubtotal" class="font-semibold text-white">0</span>
+                            <span id="cartSubtotal" class="font-semibold text-white">0 zł</span>
                         </div>
-                        <div class="flex justify-between text-sm text-gray-400">
-                            <span id="deliveryLabel">Доставка</span>
-                            <span id="deliveryCost" class="font-semibold text-green-400">Free</span>
-                        </div>
+                        <p class="text-xs text-brand-gold/80 bg-brand-gold/10 p-2.5 rounded-lg border border-brand-gold/20" id="deliveryInfoText">
+                            ℹ️ Стоимость и детали доставки уточнит оператор при подтверждении заказа.
+                        </p>
                         <div class="flex justify-between text-lg font-bold text-white pt-2 border-t border-brand-border">
                             <span id="totalLabel">Итого к оплате</span>
-                            <span id="cartTotal" class="text-brand-gold">0</span>
+                            <span id="cartTotal" class="text-brand-gold">0 zł</span>
                         </div>
                     </div>
                     <button onclick="openCheckoutModal()" id="checkoutBtn" class="w-full bg-brand-gold hover:bg-brand-goldHover text-brand-dark py-4 rounded-xl font-bold shadow-lg transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
@@ -238,7 +234,7 @@
         </div>
     </div>
 
-    <!-- Checkout Modal (Exactly as screenshot) -->
+    <!-- Checkout Modal -->
     <div id="checkoutModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeCheckoutModal()"></div>
         <div class="relative bg-[#0D1526] border border-brand-border rounded-2xl w-full max-w-lg p-6 sm:p-8 shadow-2xl z-10 overflow-y-auto max-h-[90vh]">
@@ -254,11 +250,11 @@
             <form id="checkoutForm" onsubmit="submitOrder(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelName">ВАШЕ ИМЯ</label>
-                    <input type="text" required id="orderName" placeholder="Александр" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+                    <input type="text" required id="orderName" value="" placeholder="Александр" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelPhone">НОМЕР ТЕЛЕФОНА</label>
-                    <input type="tel" required id="orderPhone" placeholder="+48 123 456 789" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+                    <input type="tel" required id="orderPhone" value="" placeholder="+48 123 456 789" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelAddress">АДРЕС ДОСТАВКИ</label>
@@ -267,14 +263,14 @@
                 <div>
                     <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelPayment">СПОСОБ ОПЛАТЫ</label>
                     <select id="orderPayment" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
-                        <option value="card" id="payCard">Банковская карта онлайн / Kaspi QR</option>
-                        <option value="cash" id="payCash">Наличные курьеру</option>
-                        <option value="terminal" id="payTerminal">Карта курьеру (терминал)</option>
+                        <option value="BLIK / Online" id="payBlik">BLIK / Онлайн-карта</option>
+                        <option value="Terminal" id="payTerminal">Карта курьеру (терминал)</option>
+                        <option value="Cash" id="payCash">Наличные курьеру</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="labelComment">КОММЕНТАРИЙ К ЗАКАЗУ</label>
-                    <input type="text" id="orderComment" placeholder="Позвоните за 15 минут до приезда" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
+                    <input type="text" id="orderComment" value="" placeholder="Позвоните за 15 минут до приезда" class="w-full bg-[#050B14] border border-brand-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold">
                 </div>
                 <div class="pt-4">
                     <button type="submit" id="submitBtn" class="w-full bg-brand-gold hover:bg-brand-goldHover text-brand-dark py-4 rounded-xl font-bold shadow-lg transition-transform active:scale-95">
@@ -296,7 +292,7 @@
                 </button>
             </div>
             <div class="space-y-3 text-sm text-gray-300">
-                <p id="aboutModalDesc">RECEPT BAR — авторские коктейли, лучшая кухня и быстрая доставка.</p>
+                <p id="aboutModalDesc">RECEPT BAR — напитки, отличная кухня и удобная доставка.</p>
                 <p><i class="fa-solid fa-location-dot text-brand-gold mr-2"></i> Pętkowo 18, Środa Wielkopolska</p>
                 <p><i class="fa-solid fa-phone text-brand-gold mr-2"></i> +48 123 456 789</p>
                 <p><i class="fa-brands fa-instagram text-brand-gold mr-2"></i> @recept.bar</p>
@@ -321,9 +317,9 @@
                 </button>
             </div>
             <div class="space-y-3 text-sm text-gray-300 leading-relaxed" id="termsBody">
-                <p>🕒 <strong>Время работы:</strong> Доставка работает ежедневно с 12:00 до 02:00 ночи.</p>
-                <p>🚀 <strong>Время доставки:</strong> Среднее время доставки составляет от 45 до 60 минут.</p>
-                <p>💰 <strong>Стоимость:</strong> Бесплатная доставка при заказе от 50 zł (5 000 тг).</p>
+                <p id="termHours">🕒 <strong>Время работы:</strong> Ежедневно с 12:00 до 02:00 ночи.</p>
+                <p id="termTime">🚀 <strong>Время доставки:</strong> Среднее время составляет от 45 до 60 минут.</p>
+                <p id="termPrice">💰 <strong>Детали:</strong> Стоимость и зону доставки уточняет оператор во время звонка.</p>
             </div>
             <div class="mt-6">
                 <button onclick="closeDeliveryTermsModal()" class="w-full bg-brand-border text-white py-3 rounded-xl font-semibold">Понятно</button>
@@ -339,7 +335,7 @@
                 <i class="fa-solid fa-check"></i>
             </div>
             <h3 class="text-2xl font-bold text-white mb-2" id="successTitle">Заказ успешно оформлен!</h3>
-            <p class="text-gray-400 text-sm mb-6" id="successDesc">Спасибо за ваш заказ! Наш администратор свяжется с вами в течение 5 минут для подтверждения.</p>
+            <p class="text-gray-400 text-sm mb-6" id="successDesc">Спасибо за ваш заказ! Наш администратор свяжется с вами в течение 5 минут.</p>
             <button onclick="closeSuccessModal()" class="w-full bg-brand-gold hover:bg-brand-goldHover text-brand-dark py-3.5 rounded-xl font-bold shadow-lg">
                 Отлично
             </button>
@@ -362,7 +358,7 @@
                 heroHitLabel: 'Хит продаж',
                 cartTitle: 'Ваша корзина',
                 subtotalLabel: 'Сумма заказа',
-                deliveryLabel: 'Доставка',
+                deliveryInfoText: 'ℹ️ Стоимость и детали доставки уточнит оператор при подтверждении заказа.',
                 totalLabel: 'Итого к оплате',
                 checkoutBtnText: 'Оформить заказ',
                 modalTitle: 'Оформление заказа',
@@ -371,12 +367,21 @@
                 labelAddress: 'АДРЕС ДОСТАВКИ',
                 labelPayment: 'СПОСОБ ОПЛАТЫ',
                 labelComment: 'КОММЕНТАРИЙ К ЗАКАЗУ',
-                payCard: 'Банковская карта онлайн / Kaspi QR',
-                payCash: 'Наличные курьеру',
+                payBlik: 'BLIK / Онлайн-карта',
                 payTerminal: 'Карта курьеру (терминал)',
+                payCash: 'Наличные курьеру',
                 confirmOrderBtnText: 'Подтвердить заказ',
                 successTitle: 'Заказ успешно оформлен!',
                 successDesc: 'Спасибо за ваш заказ! Наш администратор свяжется с вами в течение 5 минут.',
+                footerContactsTitle: 'Контакты и время',
+                footerHours: 'Ежедневно с 12:00 до 02:00',
+                footerPaymentTitle: 'Способы оплаты',
+                aboutModalTitle: 'О баре RECEPT',
+                aboutModalDesc: 'RECEPT BAR — напитки, отличная кухня и удобная доставка.',
+                termsTitle: 'Условия доставки RECEPT BAR',
+                termHours: '🕒 Время работы: Ежедневно с 12:00 до 02:00 ночи.',
+                termTime: '🚀 Время доставки: Среднее время составляет от 45 до 60 минут.',
+                termPrice: '💰 Детали: Стоимость и зону доставки уточняет оператор во время звонка.',
                 categories: [
                     { id: 'cold', name: 'Холодные закуски и салаты', icon: 'fa-snowflake' },
                     { id: 'hot', name: 'Горячие закуски', icon: 'fa-fire-flame-curved' },
@@ -386,7 +391,7 @@
                 ]
             },
             pl: {
-                navAbout: 'O нас',
+                navAbout: 'O nas',
                 cartBtnText: 'Koszyk',
                 heroBadgeText: 'Dostawa premium z baru',
                 heroTitle: 'Wykwintny smak <br><span class="text-brand-gold">w Twoim domu</span>',
@@ -396,7 +401,7 @@
                 heroHitLabel: 'Bestseller',
                 cartTitle: 'Twój koszyk',
                 subtotalLabel: 'Suma zamówienia',
-                deliveryLabel: 'Dostawa',
+                deliveryInfoText: 'ℹ️ Koszt i szczegóły dostawy zostaną potwierdzone przez operatora.',
                 totalLabel: 'Razem do zapłaty',
                 checkoutBtnText: 'Złóż zamówienie',
                 modalTitle: 'Składanie zamówienia',
@@ -405,12 +410,21 @@
                 labelAddress: 'ADRES DOSTAWY',
                 labelPayment: 'METODA PŁATNOŚCI',
                 labelComment: 'KOMENTARZ DO ZAMÓWIENIA',
-                payCard: 'Karta online / Blik / QR',
-                payCash: 'Gotówka przy odbiorze',
+                payBlik: 'BLIK / Karta online',
                 payTerminal: 'Karta u kuriera (terminal)',
+                payCash: 'Gotówka przy odbiorze',
                 confirmOrderBtnText: 'Potwierdź zamówienie',
                 successTitle: 'Zamówienie przyjęte!',
                 successDesc: 'Dziękujemy za zamówienie! Skontaktujemy się z Tobą w ciągu 5 minut.',
+                footerContactsTitle: 'Kontakt i godziny',
+                footerHours: 'Codziennie od 12:00 do 02:00',
+                footerPaymentTitle: 'Płatności',
+                aboutModalTitle: 'O barze RECEPT',
+                aboutModalDesc: 'RECEPT BAR — napoje, wyśmienita kuchnia i wygodna dostawa.',
+                termsTitle: 'Warunki dostawy RECEPT BAR',
+                termHours: '🕒 Godziny otwarcia: Codziennie od 12:00 do 02:00 w nocy.',
+                termTime: '🚀 Czas dostawy: Średni czas dostawy wynosi od 45 do 60 minut.',
+                termPrice: '💰 Szczegóły: Koszt dostawy potwierdza operator podczas rozmowy.',
                 categories: [
                     { id: 'cold', name: 'Zimne przekąski i sałatki', icon: 'fa-snowflake' },
                     { id: 'hot', name: 'Ciepłe przekąski', icon: 'fa-fire-flame-curved' },
@@ -430,7 +444,7 @@
                 heroHitLabel: 'Bestseller',
                 cartTitle: 'Your Cart',
                 subtotalLabel: 'Subtotal',
-                deliveryLabel: 'Delivery',
+                deliveryInfoText: 'ℹ️ Delivery cost and details will be confirmed by the operator.',
                 totalLabel: 'Total amount',
                 checkoutBtnText: 'Checkout',
                 modalTitle: 'Checkout Order',
@@ -439,12 +453,21 @@
                 labelAddress: 'DELIVERY ADDRESS',
                 labelPayment: 'PAYMENT METHOD',
                 labelComment: 'ORDER COMMENT',
-                payCard: 'Online Card / QR',
-                payCash: 'Cash to courier',
+                payBlik: 'BLIK / Online Card',
                 payTerminal: 'Card to courier (terminal)',
+                payCash: 'Cash to courier',
                 confirmOrderBtnText: 'Confirm Order',
                 successTitle: 'Order Placed!',
                 successDesc: 'Thank you for your order! We will contact you within 5 minutes.',
+                footerContactsTitle: 'Contacts & Hours',
+                footerHours: 'Daily from 12:00 to 02:00',
+                footerPaymentTitle: 'Payment Methods',
+                aboutModalTitle: 'About RECEPT BAR',
+                aboutModalDesc: 'RECEPT BAR — drinks, fine cuisine, and convenient delivery.',
+                termsTitle: 'RECEPT BAR Delivery Terms',
+                termHours: '🕒 Working hours: Daily from 12:00 to 02:00 night.',
+                termTime: '🚀 Delivery time: Average delivery time is 45 to 60 minutes.',
+                termPrice: '💰 Details: Delivery cost is confirmed by operator during call.',
                 categories: [
                     { id: 'cold', name: 'Cold Appetizers & Salads', icon: 'fa-snowflake' },
                     { id: 'hot', name: 'Hot Appetizers', icon: 'fa-fire-flame-curved' },
@@ -456,43 +479,43 @@
         };
 
         const productsMaster = [
-            { id: 1, cat: 'cold', price: 2400, pricePln: 38, weight: '250гр', image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80',
+            { id: 1, cat: 'cold', pricePln: 24, weight: '250гр', image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80',
               names: { ru: 'Тар-тар из семги', pl: 'Tatar z łososia', en: 'Salmon Tartare' },
               descs: { ru: 'Свежайшее филе семги с каперсами, луком шалот и фирменной заправкой.', pl: 'Świeży łosoś z kaparami i sosem autorskim.', en: 'Fresh salmon with capers and house dressing.' } },
-            { id: 2, cat: 'cold', price: 1700, pricePln: 28, weight: '250гр', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80',
-              names: { ru: 'Филе скумбрии с горячим картофелем', pl: 'Makrela z gorącymi ziemniakami', en: 'Mackerel Fillet with Hot Potatoes' },
+            { id: 2, cat: 'cold', pricePln: 17, weight: '250гр', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80',
+              names: { ru: 'Филе скумбрии с горячим картофелем', pl: 'Makrela z ziemniakami', en: 'Mackerel Fillet with Hot Potatoes' },
               descs: { ru: 'Нежное филе скумбрии пряного посола с отварным картофелем.', pl: 'Delikatna makrela z ziemniakami.', en: 'Spiced mackerel fillet with boiled potatoes.' } },
-            { id: 3, cat: 'cold', price: 1900, pricePln: 32, weight: '180гр', image: 'https://images.unsplash.com/photo-1631379578550-7038263db699?auto=format&fit=crop&w=600&q=80',
+            { id: 3, cat: 'cold', pricePln: 19, weight: '180гр', image: 'https://images.unsplash.com/photo-1631379578550-7038263db699?auto=format&fit=crop&w=600&q=80',
               names: { ru: 'Сырная тарелка', pl: 'Deska serów', en: 'Cheese Platter' },
               descs: { ru: 'Ассорти элитных сыров с медом, орехами и виноградом.', pl: 'Wybór serów z miodem i orzechami.', en: 'Fine cheese assortment with honey and nuts.' } },
-            { id: 4, cat: 'cold', price: 2700, pricePln: 45, weight: '200гр', image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80',
+            { id: 4, cat: 'cold', pricePln: 27, weight: '200гр', image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80',
               names: { ru: 'Рыбная нарезка', pl: 'Talerz rybny', en: 'Fish Assortment' },
               descs: { ru: 'Изысканное ассорти из деликатесных видов рыб.', pl: 'Zestaw ryb wykwintnych.', en: 'Delicacy fish selection.' } },
-            { id: 5, cat: 'cold', price: 3900, pricePln: 60, weight: '200гр', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80',
-              names: { ru: 'Нарезка по-казахски', pl: 'Mięsa tradycyjne', en: 'Meat Platter' },
+            { id: 5, cat: 'cold', pricePln: 39, weight: '200гр', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80',
+              names: { ru: 'Мясная нарезка', pl: 'Mięsa tradycyjne', en: 'Meat Platter' },
               descs: { ru: 'Традиционные мясные деликатесы высшего качества.', pl: 'Tradycyjne wędliny i mięsa.', en: 'Traditional meat delicacies.' } },
-            { id: 6, cat: 'hot', price: 1600, pricePln: 25, weight: '200гр', image: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&w=600&q=80',
+            { id: 6, cat: 'hot', pricePln: 16, weight: '200гр', image: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&w=600&q=80',
               names: { ru: 'Жульен с грибами и курицей', pl: 'Julienne z kurczakiem i grzybami', en: 'Julienne with Chicken & Mushrooms' },
               descs: { ru: 'Запеченные грибы и куриное филе под сырной корочкой.', pl: 'Zapiekane grzyby i kurczak pod serem.', en: 'Baked mushrooms & chicken under cheese crust.' } },
-            { id: 7, cat: 'hot', price: 2100, pricePln: 34, weight: '300гр', image: 'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?auto=format&fit=crop&w=600&q=80',
+            { id: 7, cat: 'hot', pricePln: 21, weight: '300гр', image: 'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?auto=format&fit=crop&w=600&q=80',
               names: { ru: 'Крылышки BBQ в пивном кляре', pl: 'Skrzydełka BBQ', en: 'BBQ Wings in Beer Batter' },
               descs: { ru: 'Хрустящие куриные крылышки в соусе барбекю.', pl: 'Chrupiące skrzydełka w sosie BBQ.', en: 'Crispy chicken wings in BBQ sauce.' } },
-            { id: 8, cat: 'hot', price: 3500, pricePln: 55, weight: '220гр', image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=600&q=80',
+            { id: 8, cat: 'hot', pricePln: 35, weight: '220гр', image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=600&q=80',
               names: { ru: 'Тигровые креветки фри', pl: 'Krewetki tygrysie', en: 'Fried Tiger Prawns' },
               descs: { ru: 'Сочные креветки в хрустящей панировке.', pl: 'Soczyste krewetki w panierce.', en: 'Juicy prawns in crispy breading.' } },
-            { id: 9, cat: 'mains', price: 6800, pricePln: 95, weight: '350гр', image: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=600&q=80',
+            { id: 9, cat: 'mains', pricePln: 68, weight: '350гр', image: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=600&q=80',
               names: { ru: 'Стейк Рибай с овощами гриль', pl: 'Stek Ribeye z warzywami', en: 'Ribeye Steak with Veggies' },
               descs: { ru: 'Мраморная говядина прожарки Medium с овощами.', pl: 'Wołowina Ribeye z warzywami z grilla.', en: 'Medium marbled beef steak with grilled veggies.' } },
-            { id: 10, cat: 'mains', price: 5400, pricePln: 80, weight: '280гр', image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80',
+            { id: 10, cat: 'mains', pricePln: 54, weight: '280гр', image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80',
               names: { ru: 'Филе лосося на гриле', pl: 'Łosoś z grilla', en: 'Grilled Salmon Fillet' },
               descs: { ru: 'Сочный стейк лосося с лимонно-сливочным соусом.', pl: 'Stek z łososia z sos cytrynowym.', en: 'Juicy salmon steak with lemon cream sauce.' } },
-            { id: 11, cat: 'cocktails', price: 1800, pricePln: 28, weight: '250мл', image: 'https://images.unsplash.com/photo-1560512823-829485b8bf24?auto=format&fit=crop&w=600&q=80',
+            { id: 11, cat: 'cocktails', pricePln: 28, weight: '250мл', image: 'https://images.unsplash.com/photo-1560512823-829485b8bf24?auto=format&fit=crop&w=600&q=80',
               names: { ru: 'Апероль Шприц', pl: 'Aperol Spritz', en: 'Aperol Spritz' },
               descs: { ru: 'Апероль, просекко, газированная вода, апельсин.', pl: 'Aperol, Prosecco, woda gazowana, pomarańcza.', en: 'Aperol, prosecco, soda, orange.' } },
-            { id: 12, cat: 'drinks', price: 800, pricePln: 14, weight: '500мл', image: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80',
+            { id: 12, cat: 'drinks', pricePln: 14, weight: '500мл', image: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80',
               names: { ru: 'Фирменный морс ягодный', pl: 'Mors owocowy', en: 'Berry Mors' },
               descs: { ru: 'Освежающий натуральный напиток из лесных ягод.', pl: 'Naturalny napój z owoców leśnych.', en: 'Refreshing drink from wild berries.' } },
-            { id: 13, cat: 'drinks', price: 1500, pricePln: 22, weight: '500мл', image: 'https://images.unsplash.com/photo-1608270120063-2f085b1c555f?auto=format&fit=crop&w=600&q=80',
+            { id: 13, cat: 'drinks', pricePln: 22, weight: '500мл', image: 'https://images.unsplash.com/photo-1608270120063-2f085b1c555f?auto=format&fit=crop&w=600&q=80',
               names: { ru: 'Крафтовое пиво RECEPT Dark', pl: 'Piwo RECEPT Dark', en: 'RECEPT Dark Beer' },
               descs: { ru: 'Темное фирменное пиво с карамельными нотками.', pl: 'Ciemne piwo z nutą karmelu.', en: 'Dark craft beer with caramel notes.' } }
         ];
@@ -518,10 +541,9 @@
             document.getElementById('currentLangText').innerText = lang;
             document.getElementById('langDropdown').classList.add('hidden');
 
-            // Translate interface elements
-            ['navAbout','cartBtnText','heroBadgeText','heroDesc','heroBtnMenu','heroBtnInfo','heroHitLabel','cartTitle','subtotalLabel','deliveryLabel','totalLabel','checkoutBtnText','modalTitle','labelName','labelPhone','labelAddress','labelPayment','labelComment','payCard','payCash','payTerminal','confirmOrderBtnText','successTitle','successDesc'].forEach(id => {
+            ['navAbout','cartBtnText','heroBadgeText','heroDesc','heroBtnMenu','heroBtnInfo','heroHitLabel','cartTitle','subtotalLabel','deliveryInfoText','totalLabel','checkoutBtnText','modalTitle','labelName','labelPhone','labelAddress','labelPayment','labelComment','payBlik','payTerminal','payCash','confirmOrderBtnText','successTitle','successDesc','footerContactsTitle','footerHours','footerPaymentTitle','aboutModalTitle','aboutModalDesc','termsTitle','termHours','termTime','termPrice'].forEach(id => {
                 const el = document.getElementById(id);
-                if(el && langObj[id]) el.innerText = langObj[id];
+                if(el && langObj[id]) el.innerHTML = langObj[id];
             });
 
             document.getElementById('heroTitle').innerHTML = langObj.heroTitle;
@@ -552,10 +574,6 @@
             renderProducts();
         }
 
-        function getFormattedPrice(item) {
-            return currentLang === 'PL' ? `${item.pricePln} zł` : `${item.price.toLocaleString()} тг / ${item.pricePln} zł`;
-        }
-
         function renderProducts() {
             const grid = document.getElementById('productsGrid');
             const titleElem = document.getElementById('activeCategoryTitle');
@@ -571,7 +589,6 @@
             grid.innerHTML = filtered.map(item => {
                 const name = item.names[currentLang.toLowerCase()];
                 const desc = item.descs[currentLang.toLowerCase()];
-                const priceText = getFormattedPrice(item);
 
                 return `
                     <div class="bg-brand-card border border-brand-border rounded-2xl overflow-hidden shadow-xl hover:border-brand-gold/50 transition-all duration-300 flex flex-col group">
@@ -588,11 +605,10 @@
                             </div>
                             <div class="flex items-center justify-between pt-4 border-t border-brand-border/60">
                                 <div>
-                                    <span class="text-base font-extrabold text-brand-gold">${priceText}</span>
+                                    <span class="text-lg font-extrabold text-brand-gold">${item.pricePln} zł</span>
                                 </div>
-                                <button onclick="addToCart(${item.id})" class="bg-brand-gold hover:bg-brand-goldHover text-brand-dark px-4 py-2.5 rounded-xl font-bold text-sm shadow-md transition-transform active:scale-95 flex items-center space-x-2">
-                                    <i class="fa-solid fa-plus text-xs"></i>
-                                    <span>+</span>
+                                <button onclick="addToCart(${item.id})" class="bg-brand-gold hover:bg-brand-goldHover text-brand-dark px-4 py-2 rounded-xl font-bold text-lg shadow-md transition-transform active:scale-95 flex items-center justify-center">
+                                    +
                                 </button>
                             </div>
                         </div>
@@ -647,28 +663,25 @@
 
             if(cart.length === 0) {
                 container.innerHTML = `<p class="text-gray-400 text-center py-10">Корзина пуста / Koszyk pusty</p>`;
-                subtotalElem.innerText = '0';
-                totalElem.innerText = '0';
+                subtotalElem.innerText = '0 zł';
+                totalElem.innerText = '0 zł';
                 checkoutBtn.disabled = true;
                 return;
             }
 
             checkoutBtn.disabled = false;
             let totalPln = 0;
-            let totalTenge = 0;
 
             container.innerHTML = cart.map(c => {
                 const name = c.item.names[currentLang.toLowerCase()];
                 const pricePln = c.item.pricePln * c.quantity;
-                const priceTenge = c.item.price * c.quantity;
                 totalPln += pricePln;
-                totalTenge += priceTenge;
 
                 return `
                     <div class="py-4 flex items-center justify-between">
                         <div>
                             <h4 class="text-white font-semibold text-sm">${name}</h4>
-                            <span class="text-brand-gold text-xs font-bold">${c.item.pricePln} zł (${c.item.price} тг)</span>
+                            <span class="text-brand-gold text-xs font-bold">${c.item.pricePln} zł</span>
                         </div>
                         <div class="flex items-center space-x-3">
                             <div class="flex items-center bg-brand-dark border border-brand-border rounded-lg overflow-hidden">
@@ -681,9 +694,8 @@
                 `;
             }).join('');
 
-            const formattedTotal = currentLang === 'PL' ? `${totalPln} zł` : `${totalTenge.toLocaleString()} тг / ${totalPln} zł`;
-            subtotalElem.innerText = formattedTotal;
-            totalElem.innerText = formattedTotal;
+            subtotalElem.innerText = `${totalPln} zł`;
+            totalElem.innerText = `${totalPln} zł`;
         }
 
         function toggleCartDrawer(open) {
